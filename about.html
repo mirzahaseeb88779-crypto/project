@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="About Syed Shuja Hussain — creative director, 20+ years of brand and campaign work, founder of VEXA.">
+    <title>About - Syed Shuja</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Alegreya:wght@400;500&family=Figtree:wght@400;500;700;900&family=Inter:wght@400;500;700;900&family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@1,700&display=swap');
+
+        /* =====================================================
+           DESIGN TOKENS
+        ===================================================== */
+        :root {
+            --bg: #ece9e2;
+            --ink: #0a0a0a;
+            --ink-soft: #2a2927;
+            --muted: #8c8881;
+            --muted-light: #b9b5ad;
+            --line: rgba(10, 10, 10, .85);
+
+            --serif: 'Alegreya', Georgia, serif;
+            --sans: 'Inter', system-ui, sans-serif;
+            --display: 'Figtree', 'Inter', sans-serif;
+            --geo: 'Montserrat', 'Inter', sans-serif;
+
+            --gutter: clamp(20px, 3.6vw, 56px);
+            --max: 1760px;
+            --ease: cubic-bezier(.22, .61, .36, 1);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+        [hidden] { display: none !important; }
+
+        html { overflow-x: hidden; -webkit-text-size-adjust: 100%; }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--ink);
+            font-family: var(--sans);
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+            overflow-x: hidden;
+        }
+
+        body.lock { overflow: hidden; }
+
+        img { max-width: 100%; }
+        a { color: inherit; }
+
+        :focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 4px; }
+
+        /* =====================================================
+           TOP BAR
+        ===================================================== */
+        .top-bar {
+            position: fixed;
+            inset: 0 0 auto 0;
+            z-index: 200;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 18px;
+            padding: 30px var(--gutter) 18px;
+            transition: background .3s, padding .3s, box-shadow .3s;
+        }
+
+        .top-bar.scrolled {
+            padding-top: 16px;
+            padding-bottom: 14px;
+            background: rgba(236, 233, 226, .86);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 1px 0 rgba(10, 10, 10, .08);
+        }
+
+        .home-link, .menu-label { display: none; }
+        body[data-view="pitch"] .home-link { display: flex; }
+        body[data-view="pitch"] .menu-label { display: block; }
+
+        .home-link svg { width: 24px; height: 24px; display: block; }
+
+        .menu-label {
+            font-family: var(--serif);
+            font-size: 15px;
+            color: var(--muted);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .menu-btn {
+            width: 34px;
+            height: 22px;
+            padding: 0;
+            border: 0;
+            background: none;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .menu-btn .line {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background: var(--ink);
+            border-radius: 2px;
+            transition: transform .3s var(--ease), opacity .3s;
+        }
+
+        .menu-btn.open .line:nth-child(1) { transform: translateY(9.5px) rotate(45deg); }
+        .menu-btn.open .line:nth-child(2) { opacity: 0; }
+        .menu-btn.open .line:nth-child(3) { transform: translateY(-9.5px) rotate(-45deg); }
+
+        .nav-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 150;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(236, 233, 226, .98);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity .4s ease, visibility .4s ease;
+        }
+
+        .nav-overlay.open { opacity: 1; visibility: visible; }
+
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+            text-align: center;
+            transform: translateY(20px);
+            transition: transform .4s var(--ease);
+        }
+
+        .nav-overlay.open .nav-links { transform: none; }
+
+        .nav-links a {
+            font-size: clamp(40px, 8vw, 80px);
+            font-weight: 900;
+            letter-spacing: -.04em;
+            line-height: 1;
+            text-decoration: none;
+            transition: color .3s, transform .3s;
+        }
+
+        .nav-links a:hover { color: #777; transform: scale(1.04); }
+
+        /* =====================================================
+           SHARED
+        ===================================================== */
+        .wrap { width: 100%; max-width: var(--max); margin: 0 auto; padding-inline: var(--gutter); }
+
+        .rule { display: block; width: 44px; height: 4px; margin: 0; border: 0; background: var(--ink); }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 14px;
+            border: 1px solid var(--ink);
+            border-radius: 999px;
+            font-family: var(--geo);
+            font-size: 11px;
+            font-weight: 500;
+            line-height: 1;
+            letter-spacing: .01em;
+            text-decoration: none;
+            white-space: nowrap;
+            color: var(--ink);
+            background: transparent;
+            transition: background .25s, color .25s, transform .25s var(--ease);
+        }
+
+        .pill.solid { background: var(--ink); color: #fff; }
+        .pill:hover { background: var(--ink); color: #fff; transform: translateY(-1px); }
+        .pill.solid:hover { background: #3a3835; }
+
+        /* tile with graceful missing-image fallback */
+        .tile {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #d9d5cd, #cfcac1);
+        }
+
+        .tile img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform .9s var(--ease);
+        }
+
+        .tile.missing img { visibility: hidden; }
+
+        /* =====================================================
+           ABOUT VIEW
+        ===================================================== */
+        .about { padding-block: clamp(110px, 12vw, 170px) 0; }
+
+        .about-heading {
+            margin: 0 0 clamp(22px, 2.4vw, 36px);
+            font-family: var(--serif);
+            font-size: clamp(46px, 4.8vw, 82px);
+            font-weight: 400;
+            line-height: 1;
+            letter-spacing: -.015em;
+        }
+
+        .cols {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            column-gap: clamp(24px, 3vw, 48px);
+            align-items: start;
+        }
+
+        .prose p {
+            margin: 0 0 1.2em;
+            font-family: var(--serif);
+            font-size: clamp(16px, 1.22vw, 21px);
+            line-height: 1.3;
+            color: var(--ink-soft);
+        }
+
+        .prose p:last-child { margin-bottom: 0; }
+
+        .prose p.statement {
+            margin-top: 26px;
+            font-family: var(--display);
+            font-size: clamp(22px, 2vw, 34px);
+            font-weight: 500;
+            line-height: 1.14;
+            letter-spacing: -.012em;
+            color: var(--ink);
+        }
+
+        .statement strong { font-weight: 700; }
+
+        .btn-row { display: flex; justify-content: flex-end; gap: 8px; margin-top: 56px; }
+
+        .about-rule { margin: clamp(40px, 4.4vw, 68px) 0 clamp(28px, 3vw, 44px); }
+
+        .vexa-text .pill { margin-top: 22px; }
+
+        .vexa-card {
+            display: flex;
+            flex-direction: column;
+            padding: clamp(22px, 2.6vw, 40px) clamp(22px, 2.8vw, 44px) 18px;
+            border: 1.5px solid var(--line);
+            border-radius: clamp(26px, 2.6vw, 38px);
+        }
+
+        .vexa-visuals { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+        .vexa-visuals .phone { width: 24%; border-radius: 14px; }
+        .vexa-visuals .hero  { width: 70%; filter: grayscale(1); }
+
+        .vexa-links {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-top: 16px;
+            font-size: clamp(10px, .75vw, 12px);
+        }
+
+        .vexa-links a { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; }
+        .vexa-links a:hover { text-decoration: underline; text-underline-offset: 3px; }
+        .vexa-links svg { width: 15px; height: 15px; }
+
+        .campaign-label {
+            margin: clamp(34px, 3.6vw, 54px) 0 10px;
+            font-family: var(--serif);
+            font-size: clamp(15px, 1.2vw, 20px);
+            color: var(--muted-light);
+        }
+
+        .campaign-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: clamp(8px, 1.1vw, 16px);
+        }
+
+        .campaign-grid .tile { display: block; aspect-ratio: 294 / 276; }
+        .campaign-grid .tile:hover img { transform: scale(1.045); }
+
+        .site-footer { padding-block: 16px clamp(34px, 4vw, 56px); }
+
+        .site-footer p {
+            margin: 0;
+            font-family: var(--serif);
+            font-size: clamp(12px, 1.05vw, 17px);
+            line-height: 1.25;
+            color: var(--muted-light);
+        }
+
+        /* =====================================================
+           PITCH VIEW
+        ===================================================== */
+        .pitch {
+            min-height: 100vh;
+            padding-block: clamp(70px, 6vw, 96px) 40px;
+            transition: opacity .3s ease;
+        }
+
+        .pitch.fade { opacity: 0; }
+
+        .pitch-heading {
+            display: inline-block;
+            margin-top: 8px;
+            font-family: var(--serif);
+            font-size: clamp(38px, 4.8vw, 80px);
+            font-weight: 400;
+            line-height: 1;
+            letter-spacing: -.02em;
+            text-decoration: none;
+        }
+
+        .pitch-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 24px;
+            margin-top: clamp(26px, 3.4vw, 54px);
+        }
+
+        .pitch-title { margin: 0; font-weight: 400; line-height: 1.1; }
+
+        .pitch-client {
+            display: block;
+            font-family: var(--serif);
+            font-size: clamp(32px, 3.9vw, 66px);
+            letter-spacing: -.02em;
+        }
+
+        .pitch-name {
+            display: block;
+            margin-top: 2px;
+            font-family: var(--geo);
+            font-size: clamp(26px, 3.4vw, 58px);
+            font-weight: 500;
+            letter-spacing: -.025em;
+        }
+
+        .pitch-head .pill { margin-top: 14px; }
+
+        .pitch-copy {
+            max-width: 560px;
+            margin: 16px 0 0;
+            font-family: var(--serif);
+            font-size: clamp(11px, .95vw, 15px);
+            line-height: 1.2;
+            color: var(--muted-light);
+        }
+
+        .pitch-nav { display: flex; gap: clamp(22px, 3.6vw, 60px); padding-top: 10px; }
+
+        .pitch-nav a {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--geo);
+            font-size: clamp(11px, .95vw, 15px);
+            color: var(--muted);
+            text-decoration: none;
+            white-space: nowrap;
+            transition: color .25s;
+        }
+
+        .pitch-nav a:hover { color: var(--ink); }
+        .pitch-nav svg { width: clamp(24px, 2.6vw, 38px); height: 14px; }
+
+        .pitch-body {
+            display: grid;
+            grid-template-columns: minmax(0, 36%) minmax(0, 1fr);
+            column-gap: clamp(32px, 6vw, 110px);
+            align-items: start;
+            margin-top: clamp(24px, 2.6vw, 40px);
+        }
+
+        /* brief column */
+        .brief-h {
+            margin: 0 0 6px;
+            font-family: var(--serif);
+            font-size: clamp(18px, 1.5vw, 25px);
+            font-weight: 500;
+            line-height: 1.1;
+        }
+
+        .brief-intro {
+            margin: 0 0 14px;
+            font-family: var(--serif);
+            font-size: clamp(13px, 1vw, 16px);
+            line-height: 1.22;
+        }
+
+        .brief-item {
+            padding: 9px 0 11px;
+            border-top: 1px solid var(--line);
+            font-family: var(--serif);
+            font-size: clamp(13px, 1vw, 16px);
+            line-height: 1.22;
+        }
+
+        .brief-item h4 { margin: 0 0 1px; font-size: inherit; font-weight: 500; }
+        .brief-item p { margin: 0; }
+
+        .advantage {
+            margin-top: 26px;
+            padding: 14px 20px 16px;
+            border: 1.5px solid var(--line);
+            border-radius: 28px;
+            font-family: var(--serif);
+        }
+
+        .advantage h3 { margin: 0 0 4px; font-size: clamp(16px, 1.4vw, 23px); font-weight: 500; line-height: 1.1; }
+        .advantage p  { margin: 0; font-size: clamp(15px, 1.3vw, 21px); line-height: 1.2; }
+
+        /* media column */
+        .video-card {
+            padding: clamp(10px, 1vw, 16px);
+            border: 1.5px solid var(--line);
+            border-radius: clamp(26px, 2.6vw, 38px);
+        }
+
+        .video-frame {
+            position: relative;
+            aspect-ratio: 16 / 9;
+            overflow: hidden;
+            border-radius: clamp(18px, 2vw, 28px);
+            background: #1b1b1b;
+        }
+
+        .video-frame img, .video-frame video {
+            position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+        }
+
+        .play-btn {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            width: clamp(74px, 9vw, 108px);
+            height: clamp(50px, 6vw, 70px);
+            border: 0;
+            border-radius: 18px;
+            background: rgba(0, 0, 0, .86);
+            color: #fff;
+            cursor: pointer;
+            transition: transform .25s var(--ease), background .25s;
+        }
+
+        .play-btn:hover { transform: translate(-50%, -50%) scale(1.06); background: #000; }
+        .play-btn svg { width: 38%; height: auto; }
+        .play-btn span { font-family: var(--serif); font-size: 9px; opacity: .85; }
+
+        .thumbs {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 5px;
+            margin-top: 16px;
+        }
+
+        .thumbs.indent { margin-left: 3%; }
+
+        .thumb {
+            display: block;
+            padding: 0;
+            border: 0;
+            aspect-ratio: 16 / 9;
+            cursor: zoom-in;
+        }
+
+        .thumb:hover img { transform: scale(1.06); }
+
+        /* pitch footer */
+        .pitch-footer {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            align-items: end;
+            gap: clamp(20px, 6vw, 120px);
+            margin-top: clamp(46px, 5vw, 80px);
+        }
+
+        .pitch-footer small {
+            display: block;
+            font-family: var(--serif);
+            font-size: clamp(10px, .8vw, 12px);
+            line-height: 1.25;
+            color: var(--muted);
+        }
+
+        .pitch-footer .rule { width: 30px; margin-bottom: 22px; }
+
+        .footer-brand { display: flex; align-items: center; gap: 12px; }
+        .footer-brand .shuj { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 700; font-size: 20px; }
+        .footer-brand .vexa-word { font-family: var(--geo); font-weight: 700; font-size: 20px; letter-spacing: -.03em; }
+        .footer-brand i { width: 1px; height: 24px; background: var(--ink); }
+
+        .big-arrow { display: block; width: clamp(36px, 4vw, 64px); transition: transform .3s var(--ease); }
+        .big-arrow:hover { transform: translate(5px, 5px); }
+        .big-arrow svg { display: block; width: 100%; height: auto; }
+
+        /* =====================================================
+           LIGHTBOX
+        ===================================================== */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            z-index: 300;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5vh 5vw;
+            background: rgba(10, 10, 10, .92);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity .3s, visibility .3s;
+        }
+
+        .lightbox.open { opacity: 1; visibility: visible; }
+        .lightbox img { max-width: 100%; max-height: 90vh; display: block; box-shadow: 0 20px 60px rgba(0, 0, 0, .5); }
+
+        .lb-btn {
+            position: absolute;
+            display: grid;
+            place-items: center;
+            width: 46px; height: 46px;
+            border: 1px solid rgba(255, 255, 255, .35);
+            border-radius: 50%;
+            background: transparent;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            transition: background .25s;
+        }
+
+        .lb-btn:hover { background: rgba(255, 255, 255, .15); }
+        .lb-close { top: 22px; right: 22px; }
+        .lb-prev  { left: 22px; top: 50%; transform: translateY(-50%); }
+        .lb-next  { right: 22px; top: 50%; transform: translateY(-50%); }
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        /* iPhone notch / rounded-corner safe areas */
+        .top-bar {
+            padding-left: max(var(--gutter), env(safe-area-inset-left));
+            padding-right: max(var(--gutter), env(safe-area-inset-right));
+        }
+        .pitch { min-height: 100svh; }
+
+        /* ── very large screens ── */
+        @media (min-width: 1800px) {
+            :root { --max: 2000px; }
+            .prose p { font-size: 22px; }
+            .brief-item, .brief-intro { font-size: 17px; }
+        }
+
+        /* ── laptop / small desktop ── */
+        @media (max-width: 1280px) {
+            .pitch-body { column-gap: 48px; }
+            .pitch-footer { gap: 40px; }
+        }
+
+        /* ── tablet landscape / portrait ── */
+        @media (max-width: 1100px) {
+            .pitch-body { grid-template-columns: 1fr; row-gap: 34px; }
+            .advantage { max-width: 640px; }
+            .pitch-footer { grid-template-columns: 1fr auto; }
+            .footer-brand { display: none; }
+        }
+
+        /* ── tablets and phones ── */
+        @media (max-width: 900px) {
+            .top-bar { padding-top: 20px; }
+            .menu-btn { width: 32px; height: 20px; }
+            .menu-btn.open .line:nth-child(1) { transform: translateY(8.5px) rotate(45deg); }
+            .menu-btn.open .line:nth-child(3) { transform: translateY(-8.5px) rotate(-45deg); }
+            .nav-links a { font-size: 44px; }
+
+            .cols, .vexa-row { grid-template-columns: 1fr; row-gap: 22px; }
+            .btn-row { justify-content: flex-start; flex-wrap: wrap; margin-top: 26px; }
+            .vexa-links { flex-wrap: wrap; row-gap: 8px; }
+            .campaign-grid { gap: 6px; }
+
+            .pitch-head { flex-direction: column; gap: 6px; }
+            .pitch-nav { width: 100%; justify-content: space-between; padding-top: 16px; }
+            .thumbs.indent { margin-left: 0; }
+
+            /* lightbox buttons move to the bottom so they never cover the slide */
+            .lightbox { padding: 64px 14px 84px; }
+            .lb-prev, .lb-next { top: auto; bottom: 20px; transform: none; display: grid; }
+            .lb-prev { left: calc(50% - 56px); }
+            .lb-next { right: calc(50% - 56px); }
+        }
+
+        /* ── phones ── */
+        @media (max-width: 600px) {
+            :root { --gutter: 18px; }
+            .about { padding-top: 96px; }
+            .vexa-card { padding: 18px 16px 12px; }
+            .vexa-visuals { gap: 12px; }
+
+            .pitch { padding-top: 84px; }
+            .pitch-heading { font-size: 34px; }
+            .pitch-client { font-size: 30px; }
+            .pitch-name { font-size: 24px; }
+            .pitch-copy { font-size: 11px; }
+            .pitch-nav a { font-size: 12px; gap: 6px; }
+            .pitch-nav svg { width: 22px; }
+
+            .thumbs { gap: 3px; }
+            .advantage { padding: 12px 16px 14px; border-radius: 24px; }
+            .video-card { padding: 8px; border-radius: 22px; }
+            .video-frame { border-radius: 16px; }
+
+            .pitch-footer { grid-template-columns: 1fr auto; gap: 16px; }
+        }
+
+        /* ── small phones (iPhone SE, 320–380px) ── */
+        @media (max-width: 380px) {
+            .nav-links a { font-size: 36px; }
+            .pill { padding: 6px 11px; font-size: 10.5px; }
+            .pitch-nav a { font-size: 11px; }
+            .pitch-nav { gap: 12px; }
+            .campaign-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; }
+        }
+
+        /* ── short landscape phones ── */
+        @media (max-height: 520px) and (orientation: landscape) {
+            .nav-links { gap: 10px; }
+            .nav-links a { font-size: 30px; }
+            .lightbox { padding: 14px 70px; }
+            .lb-prev, .lb-next { top: 50%; bottom: auto; transform: translateY(-50%); }
+            .lb-prev { left: 14px; }
+            .lb-next { right: 14px; }
+        }
+
+        /* ── touch devices: no sticky hover effects ── */
+        @media (hover: none) {
+            .tile:hover img, .thumb:hover img { transform: none; }
+            .pill:hover, .big-arrow:hover { transform: none; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; scroll-behavior: auto !important; }
+        }
+    </style>
+</head>
+<body data-view="about">
+
+    <!-- TOP BAR -->
+    <header class="top-bar" id="top-bar">
+        <a class="home-link" href="index.html" aria-label="Home">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5 1.8 11.4a1 1 0 0 0 .66 1.76H4.5V21a1 1 0 0 0 1 1h4.3v-6.2h4.4V22h4.3a1 1 0 0 0 1-1v-7.84h2.04a1 1 0 0 0 .66-1.76L12 2.5Z"/></svg>
+        </a>
+        <span class="menu-label" id="menu-label">menu</span>
+        <button class="menu-btn" id="menu-btn" aria-label="Open menu" aria-expanded="false">
+            <span class="line"></span><span class="line"></span><span class="line"></span>
+        </button>
+    </header>
+
+    <div class="nav-overlay" id="nav-overlay">
+        <nav class="nav-links" aria-label="Main">
+            <a href="index.html">Hello</a>
+            <a href="index.html#work">Work</a>
+            <a href="#about">About</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </div>
+
+    <!-- =====================================================
+         ABOUT
+    ===================================================== -->
+    <div id="about-view">
+        <main class="about wrap" id="about">
+
+            <h1 class="about-heading">about me</h1>
+
+            <div class="cols">
+                <div class="prose">
+                    <p>I’ve spent more than 20 years turning business opportunities into ideas people can understand, feel and remember.</p>
+                    <p>My career has taken me through Leo Burnett, FP7 McCann, Impact BBDO, Havas and Dubai World Trade Centre, working across banking, aviation, retail, FMCG, government, technology and large-scale experiences.</p>
+                    <p>I grew up through design and art direction, which means craft is still very much part of how I think. But over time the role became bigger: finding the idea, shaping the story, building the visual world, guiding teams and production, and making sure the final work still carries the thought that started it. That combination is probably the simplest way to describe me today. I can move upstream into strategy and creative direction, then move back into the detail when typography, a frame, a character, a film treatment or a visual system needs attention.</p>
+                </div>
+
+                <div class="prose">
+                    <p>Born and raised in Dubai, I bring a multicultural point of view shaped by global agency culture and more than two decades of making work across the Middle East and beyond.</p>
+                    <p>The work has picked up recognition along the way, including WARC, Dubai Lynx, Clio, Gerety, Caples, The One Show and MMA SMARTIES. Awards matter. But the part I still enjoy most is that moment when a complicated brief suddenly becomes a simple idea.</p>
+                    <p class="statement">Still curious. Still making.<br>Still looking for the next one.</p>
+
+                    <div class="btn-row">
+                        <a class="pill" href="files/resume.pdf" download>Download my Resume</a>
+                        <a class="pill solid" href="files/book.pdf" download>Download my Book</a>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="rule about-rule">
+
+            <div class="cols vexa-row">
+                <div class="prose vexa-text">
+                    <p>After years inside the creative industry, I kept seeing the same thing: good thinking getting fragmented between strategy decks, creative development, production pressure and tight timelines. That led me to build VEXA.</p>
+                    <p>VEXA is an AI-powered Brand Operating System designed to connect strategy, human insight, creative thinking and execution in one structured process. For me, it is less about replacing creativity and more about protecting the conditions that help better creativity happen.</p>
+                    <p class="statement"><strong>It is the natural next chapter of how I work:</strong><br>human judgment first, technology helping us get faster.</p>
+                    <a class="pill solid" href="files/vexa-profile.pdf" download>Download VEXA profile</a>
+                </div>
+
+                <div class="vexa-card">
+                    <div class="vexa-visuals">
+                        <img class="phone" src="images/vexa-phone.png" alt="VEXA Instagram feed on a phone" loading="lazy">
+                        <img class="hero" src="images/vexa-hero.png" alt="VEXA — The Brand Operating System" loading="lazy">
+                    </div>
+                    <div class="vexa-links">
+                        <a href="https://www.instagram.com/VEXAnow" target="_blank" rel="noopener">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+                            Follow @VEXAnow
+                        </a>
+                        <a href="https://www.VEXAit.com" target="_blank" rel="noopener">www.VEXAit.com</a>
+                    </div>
+                </div>
+            </div>
+
+            <p class="campaign-label">Click to view the campaigns</p>
+
+            <div class="campaign-grid" id="campaign-grid"></div>
+
+        </main>
+
+        <footer class="site-footer wrap">
+            <p>© 2026 Syed Shuja Hussain &amp; VEXA. All pitch concepts and creative work are protected.<br>
+            Unauthorised use or reproduction is strictly prohibited.</p>
+        </footer>
+    </div>
+
+    <!-- PITCH VIEW (rendered by JS) -->
+    <main class="pitch wrap" id="pitch-view" hidden></main>
+
+    <!-- LIGHTBOX -->
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Slide viewer">
+        <button class="lb-btn lb-close" id="lb-close" aria-label="Close">✕</button>
+        <button class="lb-btn lb-prev" id="lb-prev" aria-label="Previous slide">←</button>
+        <img id="lb-img" src="" alt="">
+        <button class="lb-btn lb-next" id="lb-next" aria-label="Next slide">→</button>
+    </div>
+
+    <script>
+        /* =================================================
+           PITCH CONTENT — edit text, images and files here
+           Each section = [label, line, line, ...]
+        ================================================= */
+        const slides = (folder, n) =>
+            Array.from({ length: n }, (_, i) => `images/pitches/${folder}/slide-${String(i + 1).padStart(2, '0')}.jpg`);
+
+        const PITCHES = [
+            {
+                id: 'campaign-1',
+                cover: 'images/campaign-01.jpg',
+                client: 'Cola Next,',
+                title: '“Tum sa next koi nahi - be your next”',
+                deck: 'files/pitch-cola-next.pdf',
+                video: { poster: 'images/pitches/cola-next/poster.jpg', src: 'videos/cola-next.mp4', alt: 'Cola Next — Tum Sa Next Koi Nahi' },
+                thumbs: slides('cola-next', 6),
+                intro: 'The brief appeared to ask for a campaign, but VEXA identified a larger opportunity: NEXT needed a clear brand direction, a bigger positioning and a stronger role inside Pakistan’s beverage culture.',
+                sections: [
+                    ['Positioning', 'Be Your Next', 'A brand built around individuality and self-belief'],
+                    ['Creative Platform', 'Tum Sa NEXT koi Nahi', 'No one can define your next better than you.']
+                ],
+                advantage: 'The core thinking was unlocked in 40 minutes. The complete brand direction was developed within a couple of hours.'
+            },
+            {
+                id: 'campaign-2',
+                cover: 'images/campaign-02.jpg',
+                client: 'Dubai Health Authority,',
+                title: '“Wellbeing, Designed In”',
+                deck: 'files/pitch-dha.pdf',
+                video: null,
+                thumbs: slides('dha', 12),
+                intro: 'The brief asked for a digital, social media and graphic design partner. VEXA identified the larger opportunity: make DHA’s health guidance easier to understand, access and act on every day.',
+                sections: [
+                    ['Opportunity', 'Move DHA from communication activity to measurable public action.'],
+                    ['Brand Truth', 'DHA is not only a health authority. It is the system that helps people take the next step for their health.'],
+                    ['Human Need', 'People do not need more complicated medical information. They need clear, trusted guidance that fits naturally into daily life.'],
+                    ['Brand Positioning', 'Dubai’s Trusted Health Authority', 'A people-first health authority that turns medical guidance into simple, bilingual and culturally relevant everyday action.'],
+                    ['North Star', 'Make health and the health system easy to understand, access and act on every day.'],
+                    ['Audience', 'Residents and Emirati families, digital hesitants, chronic-care audiences, health tourists, healthcare professionals, employers and payors.'],
+                    ['Strategic Pillars', 'Prevention as a habit', 'Digital health made simple', 'Trust and transparency', 'Inclusive health for a diverse Dubai', 'Health tourism excellence'],
+                    ['Communication System', 'VEXA connected always-on content with seasonal moments such as Ramadan, Hajj, summer heat, breast cancer and diabetes month.', 'This created a year-round system that could inform, reassure and move people towards screenings, bookings, telehealth sign-ups and digital-service adoption.'],
+                    ['Three Gates', 'Diagnose: audits, social listening, tensions and opportunities', 'Co-create: brand DNA, positioning, platforms and playbooks', 'Activate: campaigns, content, paid media, measurement and optimisation']
+                ],
+                advantage: 'The core strategic direction was unlocked in approximately 40 minutes. The complete response, from opportunity and brand positioning to communication architecture, audience logic and performance system, was developed within a couple of hours.'
+            },
+            {
+                id: 'campaign-3',
+                cover: 'images/campaign-03.jpg',
+                client: 'Dubai Ambulance,',
+                title: '“One Pulse. One System.”',
+                deck: 'files/pitch-dubai-ambulance.pdf',
+                video: { poster: 'images/pitches/dubai-ambulance/poster.jpg', src: 'videos/dubai-ambulance.mp4', alt: 'Dubai Ambulance — Our Manifesto' },
+                thumbs: slides('dubai-ambulance', 6),
+                intro: 'The brief was not simply about creating another healthcare campaign. VEXA identified the larger opportunity: Dubai’s healthcare system already functioned as one network, but visually it appeared fragmented.',
+                sections: [
+                    ['Context', 'Healthcare is a high-trust infrastructure category. In moments of crisis, people need clarity, authority and reassurance.'],
+                    ['Opportunity', 'Create one visual layer that connects Dubai’s hospitals, clinics, emergency units and healthcare touchpoints.'],
+                    ['Existing Equity', 'Dubai Ambulance already owned strong recognition through its red pulse symbol, government authority and 998 emergency identity.'],
+                    ['Strategic Thought', 'One Pulse. One System.', 'The pulse became more than a Dubai Ambulance graphic. It became a visible symbol of coordinated healthcare across the emirate.'],
+                    ['Brand Role', 'Dubai Ambulance would act as the endorsement layer, connecting individual healthcare institutions without replacing their identities.'],
+                    ['Design Translation', 'The pulse was transformed into a scalable system for wayfinding, signage, digital interfaces, communication materials and outdoor campaigns.'],
+                    ['System Logic', 'Pulse as a directional line', 'Pulse as an endorsement strip', 'Pulse as a digital progress cue', 'Pulse as a citywide visual anchor'],
+                    ['Communication Impact', 'The system shifts perception from separate services to one connected healthcare infrastructure, reinforcing trust, coordination and public confidence.']
+                ],
+                advantage: 'VEXA connected the context, opportunity, existing brand equity, strategic platform and design system into one clear direction in approximately 40 minutes. The full proposal was developed within a couple of hours.'
+            }
+        ];
+
+        /* =================================================
+           HELPERS
+        ================================================= */
+        const $ = (id) => document.getElementById(id);
+        const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+        const ICON = {
+            left:  '<svg viewBox="0 0 40 14" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M39 7H1M7 1 1 7l6 6"/></svg>',
+            right: '<svg viewBox="0 0 40 14" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M1 7h38M33 1l6 6-6 6"/></svg>',
+            diag:  '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="square" aria-hidden="true"><path d="M10 10 54 54M54 20v34H20"/></svg>',
+            play:  '<svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M6 3.5v17l14-8.5z"/></svg>'
+        };
+
+        /* mark tiles whose image fails to load, so the grey placeholder shows cleanly */
+        document.addEventListener('error', (e) => {
+            const img = e.target;
+            if (img.tagName === 'IMG' && img.closest('.tile')) img.closest('.tile').classList.add('missing');
+        }, true);
+
+        /* =================================================
+           ABOUT: campaign tiles
+        ================================================= */
+        $('campaign-grid').innerHTML = PITCHES.map((p) =>
+            `<a class="tile" href="#${p.id}" aria-label="View campaign: ${esc(p.client.replace(/,$/, ''))} — ${esc(p.title)}">
+                <img src="${esc(p.cover)}" alt="" loading="lazy">
+            </a>`).join('');
+
+        /* =================================================
+           PITCH RENDERING
+        ================================================= */
+        function pitchHTML(p, i) {
+            const prev = PITCHES[i - 1];
+            const next = PITCHES[(i + 1) % PITCHES.length];
+
+            const items = p.sections.map(([label, ...lines]) =>
+                `<div class="brief-item"><h4>${esc(label)}</h4>${lines.map((l) => `<p>${esc(l)}</p>`).join('')}</div>`).join('');
+
+            const video = p.video ? `
+                <div class="video-card">
+                    <div class="video-frame" data-src="${esc(p.video.src)}">
+                        <img src="${esc(p.video.poster)}" alt="${esc(p.video.alt)}">
+                        <button class="play-btn" type="button" aria-label="Play video: ${esc(p.video.alt)}">${ICON.play}<span>click to play</span></button>
+                    </div>
+                </div>` : '';
+
+            const thumbs = p.thumbs.map((src, n) =>
+                `<button class="thumb tile" type="button" data-index="${n}" aria-label="Enlarge slide ${n + 1}">
+                    <img src="${esc(src)}" alt="${esc(p.client.replace(/,$/, ''))} slide ${n + 1}" loading="lazy">
+                </button>`).join('');
+
+            return `
+                <hr class="rule">
+                <a class="pitch-heading" href="#about">Campaigns Powered by VEXA</a>
+
+                <div class="pitch-head">
+                    <div>
+                        <h1 class="pitch-title">
+                            <span class="pitch-client">${esc(p.client)}</span>
+                            <span class="pitch-name">${esc(p.title)}</span>
+                        </h1>
+                        <a class="pill solid" href="${esc(p.deck)}" download>Download the pitch deck</a>
+                        <p class="pitch-copy">© 2026 Syed Shuja Hussain &amp; VEXA. All pitch concepts and creative work are protected.<br>Unauthorised use or reproduction is strictly prohibited.</p>
+                    </div>
+                    <nav class="pitch-nav" aria-label="Pitches">
+                        ${prev ? `<a href="#${prev.id}">${ICON.left} Previous Pitch</a>` : ''}
+                        <a href="#${next.id}">Next Pitch ${ICON.right}</a>
+                    </nav>
+                </div>
+
+                <div class="pitch-body">
+                    <section class="brief" aria-label="How VEXA unlocked the brief">
+                        <h2 class="brief-h">How VEXA Unlocked the Brief</h2>
+                        <p class="brief-intro">${esc(p.intro)}</p>
+                        ${items}
+                        <div class="advantage">
+                            <h3>VEXA Advantage</h3>
+                            <p>${esc(p.advantage)}</p>
+                        </div>
+                    </section>
+
+                    <section class="media" aria-label="Pitch visuals">
+                        ${video}
+                        <div class="thumbs${p.video ? ' indent' : ''}">${thumbs}</div>
+                    </section>
+                </div>
+
+                <footer class="pitch-footer">
+                    <div>
+                        <hr class="rule">
+                        <small>this website is powered by VEXA® &amp; develop by webstings</small>
+                        <small>All rights reserved @ TheShuj.com 2026</small>
+                        <small>United Arab Emirates | United States | Pakistan</small>
+                    </div>
+                    <div class="footer-brand" aria-hidden="true"><span class="shuj">The Shuj</span><i></i><span class="vexa-word">vexa</span></div>
+                    <a class="big-arrow" href="#${next.id}" aria-label="Next pitch">${ICON.diag}</a>
+                </footer>`;
+        }
+
+        /* =================================================
+           ROUTER   #about (default) · #campaign-1..3
+        ================================================= */
+        const aboutView = $('about-view');
+        const pitchView = $('pitch-view');
+        let current = -1;
+
+        function route() {
+            const id = location.hash.replace('#', '');
+            const index = PITCHES.findIndex((p) => p.id === id);
+            current = index;
+
+            if (index === -1) {
+                pitchView.hidden = true;
+                aboutView.hidden = false;
+                document.body.dataset.view = 'about';
+                document.title = 'About - Syed Shuja';
+                if (id !== 'about') window.scrollTo(0, 0);
+                return;
+            }
+
+            const show = () => {
+                aboutView.hidden = true;
+                pitchView.hidden = false;
+                pitchView.innerHTML = pitchHTML(PITCHES[index], index);
+                document.body.dataset.view = 'pitch';
+                document.title = `${PITCHES[index].client.replace(/,$/, '')} — Campaigns Powered by VEXA`;
+                window.scrollTo(0, 0);
+                requestAnimationFrame(() => pitchView.classList.remove('fade'));
+            };
+
+            pitchView.classList.add('fade');
+            pitchView.hidden ? show() : setTimeout(show, 280);
+        }
+
+        window.addEventListener('hashchange', route);
+        route();
+
+        /* =================================================
+           VIDEO + LIGHTBOX
+        ================================================= */
+        const lb = { el: $('lightbox'), img: $('lb-img'), list: [], i: 0 };
+
+        function lbShow(i) {
+            lb.i = (i + lb.list.length) % lb.list.length;
+            lb.img.src = lb.list[lb.i];
+        }
+
+        function lbOpen(list, i) {
+            lb.list = list;
+            lbShow(i);
+            lb.el.classList.add('open');
+            document.body.classList.add('lock');
+            $('lb-close').focus();
+        }
+
+        function lbClose() {
+            lb.el.classList.remove('open');
+            document.body.classList.remove('lock');
+        }
+
+        pitchView.addEventListener('click', (e) => {
+            const play = e.target.closest('.play-btn');
+            if (play) {
+                const frame = play.closest('.video-frame');
+                const video = document.createElement('video');
+                video.src = frame.dataset.src;
+                video.controls = true;
+                video.autoplay = true;
+                video.playsInline = true;
+                frame.replaceChildren(video);
+                return;
+            }
+
+            const thumb = e.target.closest('.thumb');
+            if (thumb) lbOpen(PITCHES[current].thumbs, Number(thumb.dataset.index));
+        });
+
+        $('lb-close').addEventListener('click', lbClose);
+        $('lb-prev').addEventListener('click', () => lbShow(lb.i - 1));
+        $('lb-next').addEventListener('click', () => lbShow(lb.i + 1));
+        lb.el.addEventListener('click', (e) => { if (e.target === lb.el) lbClose(); });
+
+        /* swipe left/right in the lightbox on touch screens */
+        let touchX = null;
+        lb.el.addEventListener('touchstart', (e) => { touchX = e.touches[0].clientX; }, { passive: true });
+        lb.el.addEventListener('touchend', (e) => {
+            if (touchX === null) return;
+            const dx = e.changedTouches[0].clientX - touchX;
+            if (Math.abs(dx) > 50) lbShow(lb.i + (dx < 0 ? 1 : -1));
+            touchX = null;
+        }, { passive: true });
+
+        /* =================================================
+           KEYBOARD
+        ================================================= */
+        document.addEventListener('keydown', (e) => {
+            if (lb.el.classList.contains('open')) {
+                if (e.key === 'Escape') lbClose();
+                if (e.key === 'ArrowLeft') lbShow(lb.i - 1);
+                if (e.key === 'ArrowRight') lbShow(lb.i + 1);
+                return;
+            }
+
+            if (e.key === 'Escape') toggleMenu(false);
+
+            if (current > -1 && !navOverlay.classList.contains('open')) {
+                if (e.key === 'ArrowRight') location.hash = PITCHES[(current + 1) % PITCHES.length].id;
+                if (e.key === 'ArrowLeft' && current > 0) location.hash = PITCHES[current - 1].id;
+            }
+        });
+
+        /* =================================================
+           MENU + SCROLLED TOP BAR
+        ================================================= */
+        const menuBtn    = $('menu-btn');
+        const navOverlay = $('nav-overlay');
+        const topBar     = $('top-bar');
+
+        function toggleMenu(force) {
+            const open = typeof force === 'boolean' ? force : !navOverlay.classList.contains('open');
+            menuBtn.classList.toggle('open', open);
+            navOverlay.classList.toggle('open', open);
+            menuBtn.setAttribute('aria-expanded', String(open));
+            document.body.classList.toggle('lock', open);
+        }
+
+        menuBtn.addEventListener('click', () => toggleMenu());
+        $('menu-label').addEventListener('click', () => toggleMenu());
+        navOverlay.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => toggleMenu(false)));
+
+        const onScroll = () => topBar.classList.toggle('scrolled', window.scrollY > 24);
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+    </script>
+
+</body>
+</html>

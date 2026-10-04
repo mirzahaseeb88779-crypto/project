@@ -1,0 +1,2089 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Syed Shuja Hussain — creative director. 20+ years of design, art direction and film craft. Founder of VEXA.">
+    <title>Syed Shuja — Portfolio</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Alegreya:wght@400;500&family=Figtree:wght@400;500;700;800;900&family=Inter:wght@400;500;700;900&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@1,700&display=swap');
+
+        /* =====================================================
+           TOKENS
+        ===================================================== */
+        :root {
+            --bg: #ece9e2;
+            --ink: #0a0a0a;
+            --ink-soft: #2a2927;
+            --muted: #8c8881;
+            --muted-light: #b9b5ad;
+            --line: rgba(10, 10, 10, .85);
+
+            --serif: 'Alegreya', Georgia, serif;
+            --sans: 'Inter', system-ui, sans-serif;
+            --display: 'Figtree', 'Inter', sans-serif;
+            --geo: 'Montserrat', 'Inter', sans-serif;
+
+            --gutter: clamp(20px, 3.6vw, 56px);
+            --max: 1760px;
+            --ease: cubic-bezier(.22, .61, .36, 1);
+
+            /* ───── HERO (desktop) ───── */
+            --title-size: min(18.8vw, 40vh);
+            --title-top: 33%;
+            --title-gap: 0.35cm;
+            --person-height: 80vh;
+            --person-bottom: 3vh;
+            --person-left: 48%;
+            --person-tilt: 0deg;
+            --cols-top: 57%;
+            --logo-max-h: 28vh;
+            --left-col-left: 17%;   --left-col-w: 23%;
+            --right-col-left: 62%;  --right-col-w: 23%;
+            --mobile-zoom: 1;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+        [hidden] { display: none !important; }
+
+        html { overflow-x: hidden; scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--ink);
+            font-family: var(--sans);
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+            overflow-x: hidden;
+        }
+
+        body.lock { overflow: hidden; }
+
+        img { max-width: 100%; }
+        a { color: inherit; }
+        :focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 4px; }
+
+        /* =====================================================
+           TOP BAR + HELLO LOGO
+        ===================================================== */
+        .top-bar {
+            position: fixed;
+            inset: 0 0 auto 0;
+            z-index: 200;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 18px;
+            padding: 30px max(var(--gutter), env(safe-area-inset-right)) 18px max(var(--gutter), env(safe-area-inset-left));
+            pointer-events: none;
+            transition: background .3s, padding .3s, box-shadow .3s;
+        }
+
+        .top-bar > * { pointer-events: auto; }
+
+        .top-bar.scrolled {
+            padding-top: 16px;
+            padding-bottom: 14px;
+            background: rgba(236, 233, 226, .86);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 1px 0 rgba(10, 10, 10, .08);
+        }
+
+        .home-link, .menu-label { display: none; }
+        body[data-view="detail"] .home-link { display: flex; }
+        body[data-view="detail"] .menu-label { display: block; }
+
+        .home-link svg { width: 24px; height: 24px; display: block; }
+
+        .menu-label {
+            font-family: var(--serif);
+            font-size: 15px;
+            color: var(--muted);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .menu-btn {
+            width: 34px;
+            height: 22px;
+            padding: 0;
+            border: 0;
+            background: none;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .menu-btn .line {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background: var(--ink);
+            border-radius: 2px;
+            transition: transform .3s var(--ease), opacity .3s;
+        }
+
+        .menu-btn.open .line:nth-child(1) { transform: translateY(9.5px) rotate(45deg); }
+        .menu-btn.open .line:nth-child(2) { opacity: 0; }
+        .menu-btn.open .line:nth-child(3) { transform: translateY(-9.5px) rotate(-45deg); }
+
+        .nav-logo {
+            position: fixed;
+            top: 30px;
+            left: 40px;
+            z-index: 200;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--ink);
+            display: none;
+            transition: opacity .3s;
+        }
+
+        body[data-view="home"] .nav-logo { display: block; }
+        .nav-logo.gone { opacity: 0; pointer-events: none; }
+
+        .nav-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 150;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(236, 233, 226, .98);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity .4s ease, visibility .4s ease;
+        }
+
+        .nav-overlay.open { opacity: 1; visibility: visible; }
+
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+            text-align: center;
+            transform: translateY(20px);
+            transition: transform .4s var(--ease);
+        }
+
+        .nav-overlay.open .nav-links { transform: none; }
+
+        .nav-links a {
+            font-size: clamp(40px, 8vw, 80px);
+            font-weight: 900;
+            letter-spacing: -.04em;
+            line-height: 1;
+            text-decoration: none;
+            transition: color .3s, transform .3s;
+        }
+
+        .nav-links a:hover { color: #777; transform: scale(1.04); }
+
+        /* =====================================================
+           SHARED
+        ===================================================== */
+        .wrap { width: 100%; max-width: var(--max); margin: 0 auto; padding-inline: var(--gutter); }
+        .rule { display: block; width: 44px; height: 4px; margin: 0; border: 0; background: var(--ink); }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 14px;
+            border: 1px solid var(--ink);
+            border-radius: 999px;
+            font-family: var(--geo);
+            font-size: 11px;
+            font-weight: 500;
+            line-height: 1;
+            text-decoration: none;
+            white-space: nowrap;
+            color: var(--ink);
+            background: transparent;
+            transition: background .25s, color .25s, transform .25s var(--ease);
+        }
+
+        .pill.solid { background: var(--ink); color: #fff; }
+        .pill:hover { background: var(--ink); color: #fff; transform: translateY(-1px); }
+        .pill.solid:hover { background: #3a3835; }
+
+        .tile {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #d9d5cd, #cfcac1);
+        }
+
+        .tile img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .9s var(--ease); }
+        .tile.missing img { visibility: hidden; }
+
+        /* =====================================================
+           HERO
+        ===================================================== */
+        .stage {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            background: var(--bg);
+        }
+
+        .composition { position: absolute; inset: 0; background: var(--bg); }
+
+        .background-layer { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+
+        .huge-title {
+            position: absolute;
+            top: var(--title-top);
+            left: calc(50% - 0.117em);
+            font-family: var(--display);
+            font-size: var(--title-size);
+            font-weight: 800;
+            letter-spacing: -0.045em;
+            color: var(--ink);
+            margin: 0;
+            line-height: 0.85;
+            white-space: nowrap;
+            user-select: none;
+            --px: 0px;
+            --py: 0px;
+        }
+
+        .huge-title-left  { z-index: 1;  transform: translate(calc(-100% - var(--title-gap) + var(--px)), calc(-50% + var(--py))); }
+        .huge-title-right { z-index: 10; transform: translate(calc(var(--title-gap) + var(--px)), calc(-50% + var(--py))); }
+
+        .person-wrapper {
+            position: absolute;
+            left: var(--person-left);
+            bottom: var(--person-bottom);
+            height: var(--person-height);
+            z-index: 5;
+            pointer-events: none;
+            transform: translateX(-50%) translate(var(--px, 0px), var(--py, 0px)) rotate(var(--person-tilt));
+        }
+
+        .person-wrapper img { height: 100%; width: auto; display: block; filter: grayscale(1) contrast(1.1); opacity: 0; }
+        .person-wrapper img.ready { opacity: 1; }
+        .person-wrapper.fallback { mix-blend-mode: multiply; }
+
+        .column {
+            position: absolute;
+            top: var(--cols-top);
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            mix-blend-mode: multiply;
+        }
+
+        .left-column  { left: var(--left-col-left);  width: var(--left-col-w); }
+        .right-column { left: var(--right-col-left); width: var(--right-col-w); }
+
+        .subtitle {
+            font-family: var(--serif);
+            color: #8c8881;
+            font-size: clamp(11px, 1.05vw, 17px);
+            line-height: 1.25;
+            margin-bottom: 1.2vw;
+        }
+
+        .left-column .subtitle  { text-align: right; }
+        .right-column .subtitle { text-align: left; }
+
+        .mbr { display: none; }
+
+        .logo-img {
+            display: block;
+            width: auto;
+            max-width: 100%;
+            height: auto;
+            max-height: var(--logo-max-h);
+            filter: grayscale(1) contrast(1.15);
+        }
+
+        .left-column .logo-img { margin-left: auto; }
+        .m-logos { display: none; }
+
+        /* =====================================================
+           WORK GRID (home)
+        ===================================================== */
+        .work-home { width: 100%; padding: 120px 40px 80px; background: var(--bg); }
+        .work-inner { width: 100%; max-width: 2200px; margin: 0 auto; }
+
+        .work-heading {
+            margin: 0 0 16px;
+            font-family: var(--display);
+            font-size: clamp(60px, 8vw, 130px);
+            font-weight: 800;
+            letter-spacing: -.05em;
+            line-height: .88;
+            color: var(--ink);
+        }
+
+        .work-intro {
+            max-width: 720px;
+            margin: 0 0 55px;
+            font-family: var(--serif);
+            color: var(--muted);
+            font-size: clamp(18px, 1.5vw, 25px);
+            line-height: 1.3;
+        }
+
+        .work-grid { width: 100%; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; }
+
+        .work-card {
+            position: relative;
+            display: block;
+            width: 100%;
+            height: 360px;
+            overflow: hidden;
+            background: #d9d5cd;
+            text-decoration: none;
+            color: #fff;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity .7s ease, transform .7s ease;
+        }
+
+        .work-card.in { opacity: 1; transform: none; }
+
+        .work-card img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease); }
+        .work-card::after { content: ''; position: absolute; inset: 0; background: rgba(0, 0, 0, .45); transition: background .4s; }
+        .work-card:hover::after { background: rgba(0, 0, 0, .58); }
+        .work-card:hover img { transform: scale(1.055); }
+
+        .card-caption { position: absolute; z-index: 2; left: 55%; top: 50%; width: 38%; transform: translateY(-50%); }
+        .card-client { display: block; margin-bottom: 5px; font-family: var(--serif); font-size: clamp(20px, 2vw, 28px); line-height: 1.02; }
+        .card-title  { display: block; font-family: var(--serif); font-size: 15px; line-height: 1.12; }
+        .card-caption::after { content: ''; display: block; width: 31px; height: 2px; margin-top: 13px; background: #fff; }
+
+        /* =====================================================
+           ABOUT (home)
+        ===================================================== */
+        .about { padding-block: clamp(60px, 7vw, 110px) 0; }
+
+        .about-heading {
+            margin: 0 0 clamp(22px, 2.4vw, 36px);
+            font-family: var(--serif);
+            font-size: clamp(46px, 4.8vw, 82px);
+            font-weight: 400;
+            line-height: 1;
+            letter-spacing: -.015em;
+        }
+
+        .cols {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            column-gap: clamp(24px, 3vw, 48px);
+            align-items: start;
+        }
+
+        .prose p {
+            margin: 0 0 1.2em;
+            font-family: var(--serif);
+            font-size: clamp(16px, 1.22vw, 21px);
+            line-height: 1.3;
+            color: var(--ink-soft);
+        }
+
+        .prose p:last-child { margin-bottom: 0; }
+
+        .prose p.statement {
+            margin-top: 26px;
+            font-family: var(--display);
+            font-size: clamp(22px, 2vw, 34px);
+            font-weight: 500;
+            line-height: 1.14;
+            letter-spacing: -.012em;
+            color: var(--ink);
+        }
+
+        .statement strong { font-weight: 700; }
+
+        .btn-row { display: flex; justify-content: flex-end; gap: 8px; margin-top: 56px; }
+        .about-rule { margin: clamp(40px, 4.4vw, 68px) 0 clamp(28px, 3vw, 44px); }
+        .vexa-text .pill { margin-top: 22px; }
+
+        .vexa-card {
+            display: flex;
+            flex-direction: column;
+            padding: clamp(22px, 2.6vw, 40px) clamp(22px, 2.8vw, 44px) 18px;
+            border: 1.5px solid var(--line);
+            border-radius: clamp(26px, 2.6vw, 38px);
+        }
+
+        .vexa-visuals { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+        .vexa-visuals .phone { width: 24%; border-radius: 14px; }
+        .vexa-visuals .vexa-hero { width: 70%; filter: grayscale(1); }
+
+        .vexa-links {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-top: 16px;
+            font-size: clamp(10px, .75vw, 12px);
+        }
+
+        .vexa-links a { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; }
+        .vexa-links a:hover { text-decoration: underline; text-underline-offset: 3px; }
+        .vexa-links svg { width: 15px; height: 15px; }
+
+        .campaign-label {
+            margin: clamp(34px, 3.6vw, 54px) 0 10px;
+            font-family: var(--serif);
+            font-size: clamp(15px, 1.2vw, 20px);
+            color: var(--muted-light);
+        }
+
+        .campaign-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(8px, 1.1vw, 16px); }
+        .campaign-grid .tile { display: block; aspect-ratio: 294 / 276; }
+        .campaign-grid .tile:hover img { transform: scale(1.045); }
+
+        /* =====================================================
+           CONTACT (home)
+        ===================================================== */
+        .contact { min-height: 80vh; padding-block: clamp(80px, 9vw, 140px) 60px; }
+
+        .contact-heading {
+            margin: 0;
+            font-family: var(--serif);
+            font-size: clamp(46px, 4.8vw, 82px);
+            font-weight: 400;
+            line-height: 1;
+            letter-spacing: -.02em;
+        }
+
+        .contact-lead {
+            margin: clamp(50px, 9vw, 130px) 0 0;
+            max-width: 560px;
+            font-family: var(--serif);
+            font-size: clamp(32px, 3.55vw, 60px);
+            font-weight: 400;
+            line-height: 1.02;
+            letter-spacing: -.02em;
+        }
+
+        .contact-links { margin: 28px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; }
+
+        .contact-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--geo);
+            font-size: clamp(12px, 1vw, 15px);
+            font-weight: 700;
+            letter-spacing: -.01em;
+            text-decoration: none;
+            transition: opacity .25s;
+        }
+
+        .contact-links a:hover { opacity: .6; }
+        .contact-links svg { width: clamp(26px, 2.4vw, 32px); height: clamp(26px, 2.4vw, 32px); flex: none; display: block; }
+
+        .site-footer { padding-block: 16px clamp(34px, 4vw, 56px); }
+        .site-footer p { margin: 0; font-family: var(--serif); font-size: clamp(12px, 1.05vw, 17px); line-height: 1.25; color: var(--muted-light); }
+
+        /* =====================================================
+           DETAIL VIEW (project + pitch pages)
+        ===================================================== */
+        .detail { min-height: 100svh; padding-block: clamp(70px, 6vw, 96px) 50px; transition: opacity .3s ease; }
+        .detail.fade { opacity: 0; }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 8px;
+            font-family: var(--serif);
+            font-size: clamp(38px, 4.8vw, 80px);
+            font-weight: 400;
+            line-height: 1;
+            letter-spacing: -.02em;
+            text-decoration: none;
+        }
+
+        .d-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 24px;
+            margin-top: clamp(26px, 3.4vw, 54px);
+        }
+
+        .d-title { margin: 0; font-weight: 400; line-height: 1.1; }
+        .d-client { display: block; font-family: var(--serif); font-size: clamp(32px, 3.9vw, 66px); letter-spacing: -.02em; }
+        .d-name { display: block; margin-top: 2px; font-family: var(--geo); font-size: clamp(26px, 3.4vw, 58px); font-weight: 500; letter-spacing: -.025em; }
+        .d-name .extra { font-family: var(--serif); font-weight: 400; letter-spacing: -.02em; font-size: 1.12em; }
+        .d-head .pill { margin-top: 14px; }
+
+        .d-nav { display: flex; gap: clamp(22px, 3.6vw, 60px); padding-top: 10px; }
+
+        .d-nav a {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--geo);
+            font-size: clamp(11px, .95vw, 15px);
+            color: var(--muted);
+            text-decoration: none;
+            white-space: nowrap;
+            transition: color .25s;
+        }
+
+        .d-nav a:hover { color: var(--ink); }
+        .d-nav svg { width: clamp(24px, 2.6vw, 38px); height: 14px; }
+
+        /* project: credits, awards, gallery */
+        .credits { margin-top: clamp(18px, 2vw, 30px); color: var(--muted-light); }
+        .credits .agency { font-family: var(--serif); font-size: clamp(15px, 1.35vw, 22px); line-height: 1.1; }
+        .credits .role { font-family: var(--serif); font-size: clamp(9px, .72vw, 11px); line-height: 1.15; }
+
+        .awards { display: flex; flex-wrap: wrap; align-items: center; gap: 14px clamp(14px, 2vw, 30px); margin-top: 18px; }
+        .awards .logo { height: clamp(26px, 3vw, 44px); }
+
+        .gallery { display: grid; gap: 4px; margin-top: clamp(16px, 2vw, 28px); }
+        .gallery .tile { min-height: 0; }
+
+        .gallery.A { grid-template-columns: 2.05fr 1fr; grid-template-rows: 1fr 1fr; aspect-ratio: 2.7 / 1; }
+        .gallery.A .tile:nth-child(1) { grid-row: 1 / 3; }
+
+        .gallery.B { grid-template-columns: 1fr 2.05fr; grid-template-rows: 1fr 1fr; aspect-ratio: 2.7 / 1; }
+        .gallery.B .tile:nth-child(1) { grid-column: 2; grid-row: 1 / 3; }
+        .gallery.B .tile:nth-child(2) { grid-column: 1; grid-row: 1; }
+        .gallery.B .tile:nth-child(3) { grid-column: 1; grid-row: 2; }
+
+        .gallery.wide { grid-template-columns: 1fr; }
+        .gallery.wide .tile { aspect-ratio: var(--ratio, 2.4 / 1); }
+
+        .gallery.duo { grid-template-columns: 1fr 1.35fr; aspect-ratio: var(--ratio, 1.65 / 1); }
+        .gallery.duo .tile { height: 100%; }
+
+        .p-deck { margin-top: 16px; }
+
+        .p-body {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, .95fr);
+            column-gap: clamp(32px, 5vw, 90px);
+            align-items: start;
+            margin-top: clamp(24px, 2.8vw, 44px);
+        }
+
+        .p-body.solo  { grid-template-columns: minmax(0, 1fr); }
+        .p-body.split { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+        .sec { margin-bottom: clamp(14px, 1.4vw, 22px); }
+        .sec h3 { margin: 0 0 1px; font-family: var(--serif); font-size: clamp(17px, 1.5vw, 25px); font-weight: 400; line-height: 1.1; }
+        .sec p  { margin: 0; max-width: 560px; font-family: var(--serif); font-size: clamp(13px, 1vw, 16px); line-height: 1.2; color: var(--ink-soft); }
+
+        .video-card { padding: clamp(10px, 1vw, 16px); border: 1.5px solid var(--line); border-radius: clamp(26px, 2.6vw, 38px); }
+
+        .video-frame {
+            position: relative;
+            aspect-ratio: 16 / 9;
+            overflow: hidden;
+            border-radius: clamp(18px, 2vw, 28px);
+            background: #1b1b1b;
+        }
+
+        .video-frame > img, .video-frame video, .video-frame iframe {
+            position: absolute; inset: 0; width: 100%; height: 100%; border: 0; object-fit: cover;
+        }
+
+        .play-btn {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            width: clamp(74px, 9vw, 108px);
+            height: clamp(50px, 6vw, 70px);
+            border: 0;
+            border-radius: 18px;
+            background: rgba(0, 0, 0, .86);
+            color: #fff;
+            cursor: pointer;
+            transition: transform .25s var(--ease), background .25s;
+        }
+
+        .play-btn:hover { transform: translate(-50%, -50%) scale(1.06); background: #000; }
+        .play-btn svg { width: 38%; height: auto; }
+        .play-btn span { font-family: var(--serif); font-size: 9px; opacity: .85; }
+
+        .logos { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px clamp(14px, 2vw, 30px); margin-top: 18px; }
+        .logos.left { justify-content: flex-start; }
+        .logos .logo { height: clamp(22px, 2.4vw, 36px); width: auto; }
+        .logos.small .logo { height: 18px; }
+        .logo-text { font-family: var(--geo); font-size: clamp(11px, .95vw, 15px); font-weight: 600; letter-spacing: -.01em; }
+
+        .appendix { margin-top: clamp(30px, 3.6vw, 56px); }
+        .appendix h2 { margin: 0 0 14px; font-family: var(--geo); font-size: clamp(20px, 1.8vw, 28px); font-weight: 400; color: var(--muted); }
+        .appendix ul { margin: 0; padding: 0; list-style: none; columns: 2; column-gap: clamp(32px, 5vw, 90px); }
+        .appendix li { break-inside: avoid; margin-bottom: 14px; }
+        .appendix b { display: block; font-family: var(--geo); font-size: clamp(11px, .9vw, 14px); font-weight: 600; color: #a3a099; }
+        .appendix a { display: block; max-width: 520px; font-family: var(--geo); font-size: clamp(8px, .66vw, 10px); line-height: 1.25; color: var(--muted-light); text-decoration: none; word-break: break-all; }
+        .appendix a:hover { color: var(--ink); text-decoration: underline; }
+
+        .p-end { margin-top: 30px; }
+
+        /* pitch: copy line, brief, advantage, thumbs, footer */
+        .pitch-copy { max-width: 560px; margin: 16px 0 0; font-family: var(--serif); font-size: clamp(11px, .95vw, 15px); line-height: 1.2; color: var(--muted-light); }
+
+        .pitch-body {
+            display: grid;
+            grid-template-columns: minmax(0, 36%) minmax(0, 1fr);
+            column-gap: clamp(32px, 6vw, 110px);
+            align-items: start;
+            margin-top: clamp(24px, 2.6vw, 40px);
+        }
+
+        .brief-h { margin: 0 0 6px; font-family: var(--serif); font-size: clamp(18px, 1.5vw, 25px); font-weight: 500; line-height: 1.1; }
+        .brief-intro { margin: 0 0 14px; font-family: var(--serif); font-size: clamp(13px, 1vw, 16px); line-height: 1.22; }
+        .brief-item { padding: 9px 0 11px; border-top: 1px solid var(--line); font-family: var(--serif); font-size: clamp(13px, 1vw, 16px); line-height: 1.22; }
+        .brief-item h4 { margin: 0 0 1px; font-size: inherit; font-weight: 500; }
+        .brief-item p { margin: 0; }
+
+        .advantage { margin-top: 26px; padding: 14px 20px 16px; border: 1.5px solid var(--line); border-radius: 28px; font-family: var(--serif); }
+        .advantage h3 { margin: 0 0 4px; font-size: clamp(16px, 1.4vw, 23px); font-weight: 500; line-height: 1.1; }
+        .advantage p  { margin: 0; font-size: clamp(15px, 1.3vw, 21px); line-height: 1.2; }
+
+        .thumbs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; margin-top: 16px; }
+        .thumbs.indent { margin-left: 3%; }
+        .thumb { display: block; padding: 0; border: 0; aspect-ratio: 16 / 9; cursor: zoom-in; }
+        .thumb:hover img { transform: scale(1.06); }
+
+        .pitch-footer { display: grid; grid-template-columns: 1fr auto auto; align-items: end; gap: clamp(20px, 6vw, 120px); margin-top: clamp(46px, 5vw, 80px); }
+        .pitch-footer small { display: block; font-family: var(--serif); font-size: clamp(10px, .8vw, 12px); line-height: 1.25; color: var(--muted); }
+        .pitch-footer .rule { width: 30px; margin-bottom: 22px; }
+
+        .footer-brand { display: flex; align-items: center; gap: 12px; }
+        .footer-brand .shuj { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 700; font-size: 20px; }
+        .footer-brand .vexa-word { font-family: var(--geo); font-weight: 700; font-size: 20px; letter-spacing: -.03em; }
+        .footer-brand i { width: 1px; height: 24px; background: var(--ink); }
+
+        .big-arrow { display: block; width: clamp(36px, 4vw, 64px); transition: transform .3s var(--ease); }
+        .big-arrow:hover { transform: translate(5px, 5px); }
+        .big-arrow svg { display: block; width: 100%; height: auto; }
+
+        /* =====================================================
+           LIGHTBOX
+        ===================================================== */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            z-index: 300;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5vh 5vw;
+            background: rgba(10, 10, 10, .92);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity .3s, visibility .3s;
+        }
+
+        .lightbox.open { opacity: 1; visibility: visible; }
+        .lightbox img { max-width: 100%; max-height: 90vh; display: block; box-shadow: 0 20px 60px rgba(0, 0, 0, .5); }
+
+        .lb-btn {
+            position: absolute;
+            display: grid;
+            place-items: center;
+            width: 46px; height: 46px;
+            border: 1px solid rgba(255, 255, 255, .35);
+            border-radius: 50%;
+            background: transparent;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            transition: background .25s;
+        }
+
+        .lb-btn:hover { background: rgba(255, 255, 255, .15); }
+        .lb-close { top: 22px; right: 22px; }
+        .lb-prev  { left: 22px; top: 50%; transform: translateY(-50%); }
+        .lb-next  { right: 22px; top: 50%; transform: translateY(-50%); }
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+        @media (min-width: 1800px) {
+            :root { --max: 2000px; }
+            .prose p { font-size: 22px; }
+            .brief-item, .brief-intro { font-size: 17px; }
+        }
+
+        @media (max-width: 1280px) {
+            .pitch-body { column-gap: 48px; }
+            .pitch-footer { gap: 40px; }
+        }
+
+        @media (max-width: 1200px) {
+            .work-home { padding-left: 28px; padding-right: 28px; }
+            .work-grid { gap: 4px; }
+            .work-card { height: 330px; }
+            .card-caption { left: 50%; width: 45%; }
+        }
+
+        @media (max-width: 1100px) {
+            .p-body { grid-template-columns: minmax(0, 1fr); row-gap: 28px; }
+            .p-body.split { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .pitch-body { grid-template-columns: 1fr; row-gap: 34px; }
+            .advantage { max-width: 640px; }
+            .pitch-footer { grid-template-columns: 1fr auto; }
+            .footer-brand { display: none; }
+        }
+
+        /* ─── MOBILE ─── */
+        @media (max-width: 900px) {
+            :root {
+                --title-size: 15.1cqw;
+                --title-top: 28%;
+                --title-gap: 1cqw;
+                --person-height: 88.7%;
+                --person-bottom: -1.3%;
+                --person-left: 48.1%;
+                --person-tilt: 0deg;
+                --cols-top: 38.5%;
+                --logo-max-h: none;
+                --left-col-left: 18.4%;  --left-col-w: 21.7%;
+                --right-col-left: 60.1%; --right-col-w: 22%;
+            }
+
+            .top-bar { padding-top: 20px; }
+            .nav-logo { top: 18px; left: 22px; font-size: 26px; }
+            .menu-btn { width: 32px; height: 20px; }
+            .menu-btn.open .line:nth-child(1) { transform: translateY(8.5px) rotate(45deg); }
+            .menu-btn.open .line:nth-child(3) { transform: translateY(-8.5px) rotate(-45deg); }
+            .nav-links a { font-size: 44px; }
+
+            /* hero */
+            .stage { height: 100vh; height: 100svh; display: flex; align-items: center; justify-content: center; }
+
+            .composition {
+                position: relative;
+                inset: auto;
+                flex: none;
+                width: calc(min(100vw, 85.5vh) * var(--mobile-zoom));
+                width: calc(min(100vw, 85.5svh) * var(--mobile-zoom));
+                aspect-ratio: 1661 / 1943;
+                container-type: inline-size;
+            }
+
+            .mbr { display: inline; }
+            .subtitle { font-size: max(8px, 1.85cqw); line-height: 1.1; margin-bottom: 0.5cqw; }
+            .left-column .subtitle  { padding-right: 1.5cqw; }
+            .right-column .subtitle { padding-left: 3.5cqw; }
+
+            .logo-img { width: 100%; }
+            .left-column .logo-img { margin-left: 0; }
+
+            .column.sliced .logo-img { display: none; }
+            .column.sliced .m-logos { display: flex; flex-direction: column; width: 100%; }
+
+            .m-row { display: flex; align-items: center; width: 100%; }
+            .m-row img { display: block; height: auto; filter: grayscale(1) contrast(1.15); }
+
+            /* work grid */
+            .work-home { padding: 90px 10px 50px; }
+            .work-heading { font-size: clamp(50px, 13vw, 75px); margin-bottom: 8px; }
+            .work-intro { max-width: 94%; font-size: 14px; line-height: 1.08; margin-bottom: 20px; }
+            .work-grid { gap: 3px; }
+            .work-card { height: auto; aspect-ratio: 311 / 302; }
+            .card-caption { left: 48%; width: 48%; transform: translate(-2%, -50%); }
+            .card-client { font-size: clamp(13px, 3.4vw, 21px); margin-bottom: 3px; }
+            .card-title { font-size: clamp(9px, 2.35vw, 14px); line-height: 1.08; }
+            .card-caption::after { width: 22px; margin-top: 8px; }
+
+            /* about + contact */
+            .cols, .vexa-row { grid-template-columns: 1fr; row-gap: 22px; }
+            .btn-row { justify-content: flex-start; flex-wrap: wrap; margin-top: 26px; }
+            .vexa-links { flex-wrap: wrap; row-gap: 8px; }
+            .campaign-grid { gap: 6px; }
+            .contact-lead { margin-top: 56px; font-size: 34px; }
+
+            /* detail pages */
+            .d-head { flex-direction: column; gap: 6px; }
+            .d-nav { width: 100%; justify-content: space-between; padding-top: 16px; }
+            .gallery.A, .gallery.B { aspect-ratio: 2.2 / 1; }
+            .appendix ul { columns: 1; }
+            .thumbs.indent { margin-left: 0; }
+
+            .lightbox { padding: 64px 14px 84px; }
+            .lb-prev, .lb-next { top: auto; bottom: 20px; transform: none; }
+            .lb-prev { left: calc(50% - 56px); }
+            .lb-next { right: calc(50% - 56px); }
+        }
+
+        @media (max-width: 600px) {
+            :root { --gutter: 16px; }
+            .work-home { padding-left: 7px; padding-right: 7px; }
+            .work-grid { gap: 2px; }
+            .card-caption { left: 46%; width: 51%; }
+            .card-client { font-size: 12px; }
+            .card-title { font-size: 8.5px; }
+
+            .vexa-card { padding: 18px 16px 12px; }
+            .vexa-visuals { gap: 12px; }
+
+            .detail { padding-top: 84px; }
+            .back-link { font-size: 34px; }
+            .d-client { font-size: 30px; }
+            .d-name { font-size: 22px; }
+            .d-nav a { font-size: 12px; gap: 6px; }
+            .d-nav svg { width: 22px; }
+            .gallery.A, .gallery.B { aspect-ratio: 1.8 / 1; }
+            .gallery.duo { aspect-ratio: auto; }
+            .p-body.split { grid-template-columns: minmax(0, 1fr); }
+            .video-card { padding: 8px; border-radius: 22px; }
+            .video-frame { border-radius: 16px; }
+            .advantage { padding: 12px 16px 14px; border-radius: 24px; }
+            .thumbs { gap: 3px; }
+            .pitch-footer { grid-template-columns: 1fr auto; gap: 16px; }
+        }
+
+        @media (max-width: 380px) {
+            .nav-links a { font-size: 36px; }
+            .pill { padding: 6px 11px; font-size: 10.5px; }
+            .d-nav a { font-size: 11px; }
+            .d-nav { gap: 12px; }
+        }
+
+        @media (max-height: 520px) and (orientation: landscape) {
+            .nav-links { gap: 10px; }
+            .nav-links a { font-size: 30px; }
+            .lightbox { padding: 14px 70px; }
+            .lb-prev, .lb-next { top: 50%; bottom: auto; transform: translateY(-50%); }
+            .lb-prev { left: 14px; }
+            .lb-next { right: 14px; }
+        }
+
+        @media (hover: none) {
+            .work-card:hover img, .tile:hover img, .thumb:hover img { transform: none; }
+            .pill:hover, .big-arrow:hover { transform: none; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+        }
+    </style>
+</head>
+<body data-view="home">
+
+    <!-- ───────────── NAVIGATION ───────────── -->
+    <div class="nav-logo" id="nav-logo">hello,i'm</div>
+
+    <header class="top-bar" id="top-bar">
+        <a class="home-link" href="#hello" aria-label="Home">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5 1.8 11.4a1 1 0 0 0 .66 1.76H4.5V21a1 1 0 0 0 1 1h4.3v-6.2h4.4V22h4.3a1 1 0 0 0 1-1v-7.84h2.04a1 1 0 0 0 .66-1.76L12 2.5Z"/></svg>
+        </a>
+        <span class="menu-label" id="menu-label">menu</span>
+        <button class="menu-btn" id="menu-btn" aria-label="Open menu" aria-expanded="false">
+            <span class="line"></span><span class="line"></span><span class="line"></span>
+        </button>
+    </header>
+
+    <div class="nav-overlay" id="nav-overlay">
+        <nav class="nav-links" aria-label="Main">
+            <a href="#hello" data-go="hello">Hello</a>
+            <a href="#work" data-go="work">Work</a>
+            <a href="#about" data-go="about">About</a>
+            <a href="#contact" data-go="contact">Contact</a>
+        </nav>
+    </div>
+
+    <!-- =====================================================
+         HOME VIEW  (hero · work · about · contact)
+    ===================================================== -->
+    <div id="home-view">
+
+        <!-- HERO -->
+        <div class="stage" id="hello">
+            <div class="composition">
+
+                <div class="background-layer">
+                    <h1 class="huge-title huge-title-left">Syed</h1>
+                    <h1 class="huge-title huge-title-right">Shuja</h1>
+                </div>
+
+                <div class="column left-column" id="brands-col">
+                    <div class="subtitle">crafted brands<br class="mbr"> y'all love</div>
+                    <img class="logo-img" id="brands-img" src="images/Untitled-1.png" alt="Brand logos">
+                    <div class="m-logos" id="brands-m"></div>
+                </div>
+
+                <div class="person-wrapper" id="person-container">
+                    <img id="person-img" src="images/G5D_9399_2 copy.png" alt="Syed Shuja">
+                </div>
+
+                <div class="column right-column" id="agencies-col">
+                    <div class="subtitle">and worked with<br class="mbr"> agencies y'all know</div>
+                    <img class="logo-img" id="agencies-img" src="images/AgenciesLogos.png" alt="Agency logos">
+                    <div class="m-logos" id="agencies-m"></div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- WORK -->
+        <section class="work-home" id="work">
+            <div class="work-inner">
+                <h2 class="work-heading">Work</h2>
+                <p class="work-intro">My career has spanned design, art direction and film craft.<br>Here are some new and older pieces I’ve had the pleasure of crafting.</p>
+                <div class="work-grid" id="work-grid"></div>
+            </div>
+        </section>
+
+        <!-- ABOUT -->
+        <section class="about wrap" id="about">
+
+            <h2 class="about-heading">about me</h2>
+
+            <div class="cols">
+                <div class="prose">
+                    <p>I’ve spent more than 20 years turning business opportunities into ideas people can understand, feel and remember.</p>
+                    <p>My career has taken me through Leo Burnett, FP7 McCann, Impact BBDO, Havas and Dubai World Trade Centre, working across banking, aviation, retail, FMCG, government, technology and large-scale experiences.</p>
+                    <p>I grew up through design and art direction, which means craft is still very much part of how I think. But over time the role became bigger: finding the idea, shaping the story, building the visual world, guiding teams and production, and making sure the final work still carries the thought that started it. That combination is probably the simplest way to describe me today. I can move upstream into strategy and creative direction, then move back into the detail when typography, a frame, a character, a film treatment or a visual system needs attention.</p>
+                </div>
+
+                <div class="prose">
+                    <p>Born and raised in Dubai, I bring a multicultural point of view shaped by global agency culture and more than two decades of making work across the Middle East and beyond.</p>
+                    <p>The work has picked up recognition along the way, including WARC, Dubai Lynx, Clio, Gerety, Caples, The One Show and MMA SMARTIES. Awards matter. But the part I still enjoy most is that moment when a complicated brief suddenly becomes a simple idea.</p>
+                    <p class="statement">Still curious. Still making.<br>Still looking for the next one.</p>
+
+                    <div class="btn-row">
+                        <a class="pill" href="files/resume.pdf" download>Download my Resume</a>
+                        <a class="pill solid" href="files/book.pdf" download>Download my Book</a>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="rule about-rule">
+
+            <div class="cols vexa-row">
+                <div class="prose vexa-text">
+                    <p>After years inside the creative industry, I kept seeing the same thing: good thinking getting fragmented between strategy decks, creative development, production pressure and tight timelines. That led me to build VEXA.</p>
+                    <p>VEXA is an AI-powered Brand Operating System designed to connect strategy, human insight, creative thinking and execution in one structured process. For me, it is less about replacing creativity and more about protecting the conditions that help better creativity happen.</p>
+                    <p class="statement"><strong>It is the natural next chapter of how I work:</strong><br>human judgment first, technology helping us get faster.</p>
+                    <a class="pill solid" href="files/vexa-profile.pdf" download>Download VEXA profile</a>
+                </div>
+
+                <div class="vexa-card">
+                    <div class="vexa-visuals">
+                        <img class="phone" src="images/vexa-phone.png" alt="VEXA Instagram feed on a phone" loading="lazy">
+                        <img class="vexa-hero" src="images/vexa-hero.png" alt="VEXA — The Brand Operating System" loading="lazy">
+                    </div>
+                    <div class="vexa-links">
+                        <a href="https://www.instagram.com/VEXAnow" target="_blank" rel="noopener">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+                            Follow @VEXAnow
+                        </a>
+                        <a href="https://www.VEXAit.com" target="_blank" rel="noopener">www.VEXAit.com</a>
+                    </div>
+                </div>
+            </div>
+
+            <p class="campaign-label">Click to view the campaigns</p>
+            <div class="campaign-grid" id="campaign-grid"></div>
+        </section>
+
+        <!-- CONTACT -->
+        <section class="contact wrap" id="contact">
+            <h2 class="contact-heading">contact</h2>
+
+            <p class="contact-lead">A big idea, a bold pitch,<br>or something interesting<br>brewing? Let’s talk.</p>
+
+            <ul class="contact-links">
+                <li>
+                    <a href="mailto:shuja.syedhussain@gmail.com">
+                        <svg viewBox="0 0 32 32" aria-hidden="true">
+                            <defs>
+                                <linearGradient id="gm" x1="0" y1="0" x2="1" y2="0">
+                                    <stop offset="0" stop-color="#8c8c8c"/>
+                                    <stop offset="1" stop-color="#c9c9c9"/>
+                                </linearGradient>
+                            </defs>
+                            <path d="M2 8.2 16 19 30 8.2V25a1.5 1.5 0 0 1-1.5 1.5H25V13.6L16 20.5 7 13.6v12.9H3.5A1.5 1.5 0 0 1 2 25V8.2Z" fill="url(#gm)"/>
+                            <path d="M2 8.2a2.2 2.2 0 0 1 3.5-1.8L16 14.3l10.5-7.9A2.2 2.2 0 0 1 30 8.2L16 19 2 8.2Z" fill="#6f6f6f"/>
+                        </svg>
+                        shuja.syedhussain@gmail.com
+                    </a>
+                </li>
+                <li>
+                    <a href="https://linkedin.com/in/theshuj" target="_blank" rel="noopener">
+                        <svg viewBox="0 0 32 32" aria-hidden="true">
+                            <rect x="1" y="1" width="30" height="30" rx="7" fill="#0a0a0a"/>
+                            <rect x="6.2" y="12.4" width="4.4" height="13.4" fill="#ece9e2"/>
+                            <circle cx="8.4" cy="8.4" r="2.6" fill="#ece9e2"/>
+                            <path d="M13.6 12.4h4.2v1.9c.8-1.4 2.4-2.3 4.4-2.3 3.6 0 5 2.2 5 5.8v8h-4.4v-7.1c0-1.7-.6-2.8-2.1-2.8-1.7 0-2.7 1.2-2.7 3.1v6.8h-4.4V12.4Z" fill="#ece9e2"/>
+                        </svg>
+                        linkedin.com/in/theshuj
+                    </a>
+                </li>
+            </ul>
+        </section>
+
+        <footer class="site-footer wrap">
+            <p>© 2026 Syed Shuja Hussain &amp; VEXA. All pitch concepts and creative work are protected.<br>
+            Unauthorised use or reproduction is strictly prohibited.</p>
+        </footer>
+
+    </div>
+
+    <!-- DETAIL VIEW (rendered by JS: project pages + VEXA pitch pages) -->
+    <main class="detail wrap" id="detail-view" hidden></main>
+
+    <!-- LIGHTBOX -->
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Slide viewer">
+        <button class="lb-btn lb-close" id="lb-close" aria-label="Close">✕</button>
+        <button class="lb-btn lb-prev" id="lb-prev" aria-label="Previous slide">←</button>
+        <img id="lb-img" src="" alt="">
+        <button class="lb-btn lb-next" id="lb-next" aria-label="Next slide">→</button>
+    </div>
+
+    <script>
+        /* =====================================================================
+           CONTENT — edit text, links and filenames here
+           ---------------------------------------------------------------------
+           Work images : images/work/<id>/01.jpg · 02.jpg · 03.jpg · poster.jpg
+           Work covers : images/work-01.jpg … work-18.jpg
+           Logos       : images/logos/<name-as-slug>.png (text shows if missing)
+           Pitches     : images/pitches/<folder>/slide-01.jpg · poster.jpg
+           Videos      : a YouTube link, or a file such as videos/work/<id>.mp4
+        ===================================================================== */
+        const LB = { agency: 'Leo Burnett Dubai', roles: ['Creative Director Divyan Kriplani', 'Copywriter Farhan Siddiqui', 'Art Director Syed Shuja Hussain'] };
+        const g = (id, n) => Array.from({ length: n }, (_, i) => `images/work/${id}/${String(i + 1).padStart(2, '0')}.jpg`);
+
+        const BABY = ['Babyshop', 'Leo Burnett', 'Campaign', 'Little Black Book', 'Ads of the World'];
+        const HC   = ['Home Centre', 'Leo Burnett', 'Dejavu', 'Behance'];
+
+        const PROJECTS = [
+            {
+                id: 'nap-like-a-king', cover: 'images/work-01.jpg',
+                client: 'Babyshop,', title: '“Nap Like a King”',
+                credits: LB,
+                gallery: { layout: 'A', images: g('nap-like-a-king', 3) },
+                sections: [
+                    ['The opportunity', 'Make affordability feel aspirational, without turning Babyshop into a discount story.'],
+                    ['The idea', 'We put children inside confident, larger-than-life worlds where value was not something their parents talked about. It became part of the child’s attitude.'],
+                    ['My contribution', 'I shaped the visual world around character, styling and fashion-film confidence, then worked with the director and production team to carry that attitude through casting, framing, movement and the final film craft.'],
+                    ['Impact / proof', 'The campaign was featured by Campaign Middle East and Little Black Book, with ‘Rolling in Style’ later ranked No. 9 in Campaign Middle East’s Top 15 Film Campaigns of 2025.']
+                ],
+                video: 'https://www.youtube.com/watch?v=_faevCtiJpU',
+                logos: BABY,
+                appendix: [
+                    ['Official film', 'https://www.youtube.com/watch?v=_faevCtiJpU'],
+                    ['Campaign Middle East feature', 'https://campaignme.com/why-babyshops-latest-ads-feel-like-a-love-letter-to-90s-advertising/'],
+                    ['Campaign Middle East Top 15 recognition', 'https://campaignme.com/the-annual-top-15-film-campaigns-of-2025/'],
+                    ['Little Black Book coverage', 'https://lbbonline.com/news/babyshop-unveils-cinematic-brand-campaign-video-directed-by-award-winning-director-trevor-mcmahan'],
+                    ['Little Black Book Creative Library', 'https://lbbonline.com/work/128361']
+                ]
+            },
+            {
+                id: 'breast-cancer-knows-no-month', cover: 'images/work-02.jpg',
+                client: 'Emirates NBD,', title: '“Breast Cancer Knows No Month”',
+                credits: LB,
+                gallery: { layout: 'B', images: g('breast-cancer-knows-no-month', 3) },
+                sections: [
+                    ['The opportunity', 'Breast cancer awareness peaks in October. Early detection cannot afford to.'],
+                    ['The idea', 'We challenged the calendar itself, turning the pink ATM into an everyday reminder that checking should not belong to one awareness month.'],
+                    ['My contribution', 'I helped shape a visual and film language that felt intimate and human without becoming sentimental or overly dramatic. The craft had to give the message emotional weight while keeping the action simple and immediate.'],
+                    ['Impact / proof', 'Silver, 2025 MMA SMARTIES MEA, Brand Purpose / Activism.']
+                ],
+                video: 'https://www.youtube.com/watch?v=AY-4KxtmH_U',
+                logos: ['Emirates NBD', 'Aster', 'MMA SMARTIES', 'Leo Burnett', 'Day of Dubai'],
+                appendix: [
+                    ['Official campaign film:', 'https://www.youtube.com/watch?v=AY-4KxtmH_U'],
+                    ['Emirates NBD campaign:', 'https://www.emiratesnbd.com/en/media-center/emirates-nbd-joins-hands-with-aster-hospitals-and-clinics'],
+                    ['MMA Global 2025 SMARTIES winners:', 'https://mmaglobal.com/smarties-2025/finalists/winners/region%3A13'],
+                    ['Emirates NBD award announcement:', 'https://www.linkedin.com/posts/emirates-nbd_emiratesnbd-mmasmarties-activity-7429496273738749792-Ka5L'],
+                    ['Emirates NBD Facebook announcement:', 'https://www.facebook.com/EmiratesNBD/posts/1233958692191205/'],
+                    ['Emirates NBD X announcement:', 'https://x.com/EmiratesNBD_AE/status/2023730565669671202'],
+                    ['Leo Burnett acknowledgement:', 'https://www.linkedin.com/posts/aakritigoel_creativeeffectiveness-activity-7417808016697249792-5UH0'],
+                    ['Campaign production post:', 'https://www.instagram.com/reel/DFZtAHdNwKR/'],
+                    ['Aster Pink ATM film:', 'https://www.youtube.com/watch?v=yhZMGPY1d60'],
+                    ['Independent coverage:', 'https://www.dayofdubai.com/news/emirates-nbd-partners-with-aster-hospitals-to-launch-breast-cancer-awareness-initiative-with-pink-atm']
+                ]
+            },
+            {
+                id: 'avoid-post-sale-anger', cover: 'images/work-03.jpg',
+                client: 'Home Centre,', title: '“Avoid Post-Sale Anger”',
+                credits: LB,
+                gallery: { layout: 'A', images: g('avoid-post-sale-anger', 3) },
+                sections: [
+                    ['The idea', 'Missing a sale can feel irrationally painful. So we treated it like an emotional condition, turning denial, anger and sadness into the three stages of Post-Sale Heartache.'],
+                    ['This film', 'Anger became performance. A small retail disappointment was given the scale and seriousness of something emotionally monumental.'],
+                    ['My contribution', 'I helped give each stage its own visual personality through performance, styling, production design and pacing, working with the director to make the comedy land through reaction, camera language and rhythm.']
+                ],
+                video: 'https://www.youtube.com/watch?v=qRQ2MCN3uT8',
+                logos: HC,
+                appendix: [
+                    ['Official film:', 'https://www.youtube.com/watch?v=qRQ2MCN3uT8'],
+                    ['Campaign feature:', 'https://www.behance.net/gallery/246358853/HOME-CENTRE-POST-SALE-HEARTACHE'],
+                    ['Farhan Siddiqui acknowledgement:', 'https://www.linkedin.com/posts/farhan-siddiqui-93563018_benjamin-franklin-once-said-whatever-is-activity-7280953177212932096-IGnf'],
+                    ['Divyan Kriplani campaign post:', 'https://www.linkedin.com/posts/divyan-kriplani-91443965_so-we-shot-this-recently-well-kinda-and-activity-7334082124339109888-H_da']
+                ]
+            },
+            {
+                id: 'original-is-every-kind-of-fan', cover: 'images/work-04.jpg',
+                client: 'Starbucks,', title: '“Original Is Every Kind of Fan”',
+                credits: { agency: 'Impact BBDO Dubai', roles: ['Creative Director Rani Mari', 'Art Director & Copy Syed Shuja Hussain'] },
+                gallery: { layout: 'A', images: g('original-is-every-kind-of-fan', 3) },
+                split: 2,
+                sections: [
+                    ['The thought', 'Originality is not reserved for a certain kind of person. Every fan brings their own rituals, personality and way of showing up.'],
+                    ['The creative direction', 'Starbucks became the space where every kind of fan could belong without becoming the same. The visual system moved away from conventional coffee advertising into expressive lifestyle moments, playful type and unexpected composition.'],
+                    ['My contribution', 'I developed the concept, copy and art direction, using typography as part of the image rather than decoration around it. AI-generated photography was directed with the same discipline as a shoot: character, lens, perspective, light, crop and attitude.'],
+                    ['Impact / proof', 'A flexible campaign language designed to travel across social, digital, in-store and wider brand communication.']
+                ],
+                video: null,
+                logos: ['Starbucks', 'Nano Banana', 'Google Gemini'], logosSmall: true,
+                appendix: []
+            },
+            {
+                id: 'financial-wellbeing', cover: 'images/work-05.jpg',
+                client: 'Emirates NBD,', title: '“Financial Wellbeing”',
+                credits: LB,
+                gallery: { layout: 'B', images: g('financial-wellbeing', 3) },
+                sections: [
+                    ['The opportunity', 'Financial wellbeing can feel abstract and institutional. We wanted to make it feel like life.'],
+                    ['The idea', 'We built the story around one family at different life stages, showing that financial wellbeing is not one big decision. It is the accumulation of everyday choices.'],
+                    ['My contribution', 'I helped develop the character world and visual storytelling, shaping personalities, environments, transitions and the animation brief so a complex banking subject could feel warm, familiar and human.']
+                ],
+                video: 'https://www.youtube.com/watch?v=Z9ufKrn0XpKI',
+                logos: ['Emirates NBD', 'Zombies', 'Ads of the World'],
+                appendix: [
+                    ['Official Financial Wellbeing platform', 'https://www.emiratesnbd.com/en/financial-wellbeing'],
+                    ['Official Financial Wellness initiative', 'https://www.emiratesnbd.com/en/media-center/emirates-nbd-marks-financial-wellness-month-in-april'],
+                    ['Zombie Studio film and credits', 'https://vimeo.com/1002765956'],
+                    ['Little Black Book feature', 'https://lbbonline.com/work/122122'],
+                    ['Ads of the World archive', 'https://www.adsoftheworld.com/campaigns/financial-wellbeing'],
+                    ['Ads of Brands feature', 'https://adsofbrands.net/en/news/ad-of-the-day-zombie-studio-introduces-emirates-nbd-s-financial-wellbeing-initiative/61755'],
+                    ['Clapboard archive', 'https://www.clapboard.com/archive/emirates-nbd-financial-wellbeing-banking-finance'],
+                    ['Zombie Studio Instagram post', 'https://www.instagram.com/reel/DBW_elavOy2/'],
+                    ['Publicis Dubai collaboration post', 'https://www.instagram.com/reel/DB12paWx-mQ/'],
+                    ['Campaign film and credits', 'https://www.youtube.com/watch?v=Z9ufKrn0XpKI']
+                ]
+            },
+            {
+                id: 'ill-survive', cover: 'images/work-06.jpg',
+                client: 'Emirates NBD,', extra: '& Dubai Police,', title: '“I’ll Survive”',
+                credits: LB,
+                gallery: { layout: 'B', images: g('ill-survive', 3) },
+                sections: [
+                    ['The opportunity', 'Fraud warnings are important, but most people tune out the language of warnings.'],
+                    ['The idea', 'We turned a serious financial-safety message into an entertaining musical performance, using familiarity and humour to make the advice more memorable and shareable.'],
+                    ['My contribution', 'I built the visual world around music-video energy, styling, choreography and rhythm, then helped shape the performance-led camera language and edit so the entertainment never diluted the seriousness of the message.'],
+                    ['Impact / proof', 'Two Golds at MMA SMARTIES MENA 2025: Social Impact Marketing and Short or Long Form Film.']
+                ],
+                video: 'https://www.youtube.com/watch?v=EVzEh5CjGX8',
+                logos: ['Emirates NBD', 'Dubai Police', 'MMA SMARTIES', 'Leo Burnett'],
+                appendix: [
+                    ['Official Emirates NBD campaign film', 'https://www.youtube.com/watch?v=EVzEh5CjGX8'],
+                    ['Campaign Middle East coverage', 'https://campaignme.com/emirates-nbd-collaborates-with-dubai-police-and-leo-burnett-to-launch-banking-campaign/'],
+                    ['Arabian Business coverage', 'https://www.arabianbusiness.com/abnews/expat-scam-dubai-residents-targeted-in-new-banking-fraud'],
+                    ['MMA Global 2025 SMARTIES winners', 'https://mmaglobal.com/smarties-2025/finalists/winners/region%3A13'],
+                    ['MMA SMARTIES winners showcase', 'https://mmaglobal.com/smarties/awards/programs/mena/insights-tips'],
+                    ['Campaign Middle East winners announcement', 'https://campaignme.com/mma-smarties-mena-2025-winners-announced/'],
+                    ['Emirates NBD award announcement', 'https://www.linkedin.com/posts/emirates-nbd_emiratesnbd-mmasmarties-activity-7429496273738749792-Ka5L'],
+                    ['Emirates NBD Facebook award announcement', 'https://www.facebook.com/EmiratesNBD/posts/1233958692191205/'],
+                    ['Emirates NBD X award announcement', 'https://x.com/EmiratesNBD_AE/status/2023730565669671202']
+                ]
+            },
+            {
+                id: 'icc-world-twenty20', cover: 'images/work-07.jpg',
+                client: 'Emirates,', title: '“ICC World Twenty20”',
+                credits: { agency: 'Havas Dubai', roles: [] },
+                gallery: { layout: 'wide', ratio: '2.7 / 1', images: g('icc-world-twenty20', 1) },
+                sections: [
+                    ['The idea', 'Three familiar languages collided: Emirates cabin-safety gestures, cricket umpire signals and the energy of Bollywood dance.'],
+                    ['The execution', 'A safety demonstration became a stadium-sized choreographed cheer, recognisably Emirates but completely at home in cricket culture.'],
+                    ['My contribution', 'I helped shape the performance around clarity and scale, from choreography and formations to camera coverage and visual rhythm, so a simple gesture could read instantly in a live stadium.'],
+                    ['Impact / proof', 'Performed by ten Emirates cabin-crew members in front of approximately 66,000 spectators at the ICC World Twenty20 final in Kolkata.']
+                ],
+                video: 'https://www.youtube.com/watch?v=4JfuwuDqjag',
+                logos: ['Emirates', 'ICC', 'Behance', 'Sport for Business', 'MSL Group'],
+                appendix: [
+                    ['Official Emirates activation feature', 'https://www.emirates.com/media-centre/emirates-gives-cricket-fans-a-unique-cheer/'],
+                    ['Activation film', 'https://www.youtube.com/watch?v=4JfuwuDqjag'],
+                    ['Official Emirates Facebook film', 'https://www.facebook.com/Emirates/videos/857767204333030/'],
+                    ['International sports-marketing coverage', 'https://sportforbusiness.com/magical-activation-from-emirates/'],
+                    ['International campaign coverage', 'https://media.mslgroup.pl/2404/pr/313230/linie-emirates-w-wyjatkowy-sposob-rozgrzewa-kibicow-krykieta'],
+                    ['ICC partnership confirmation', 'https://www.icc-cricket.com/news/emirates-airline-continues-long-standing-relationship-with-icc']
+                ]
+            },
+            {
+                id: 'avoid-post-sale-sadness', cover: 'images/work-08.jpg',
+                client: 'Home Centre,', title: '“Avoid Post-Sale Sadness”',
+                credits: LB,
+                gallery: { layout: 'B', images: g('avoid-post-sale-sadness', 3) },
+                sections: [
+                    ['The idea', 'For the sadness chapter of Post-Sale Heartache, grief became physical. The character’s inflated body turned disappointment into something you could literally see. He tries to carry on normally, but the missed piece of furniture has consumed his entire presence.'],
+                    ['My contribution', 'I helped develop the character attitude, physical comedy and visual language, using slower performance, heavier framing and restrained rhythm to make the absurd emotional weight feel strangely believable.']
+                ],
+                video: 'videos/work/avoid-post-sale-sadness.mp4',
+                logos: HC,
+                appendix: [
+                    ['Home Centre campaign film and full campaign description', 'https://www.linkedin.com/posts/divyan-kriplani-91443965_so-we-shot-this-recently-well-kinda-and-activity-7334082124339109888-H_da'],
+                    ['Home Centre campaign reference by Birth', 'https://www.facebook.com/birth.tv/posts/homecentre-stages-of-grief-directed-by-nalleaxel-_____represented-by-birth/1725527846241446/'],
+                    ['Home Centre campaign production reference', 'https://www.instagram.com/p/Cdv8JXqoiHD/'],
+                    ['Home Centre campaign social reference', 'https://www.instagram.com/p/DITDOZ9tocA/']
+                ]
+            },
+            {
+                /* No screenshot was provided for this one — add its text below. */
+                id: 'gulf-launch', cover: 'images/work-09.jpg',
+                client: 'Nutella Biscuits,', title: '“Gulf Launch”',
+                credits: null,
+                gallery: { layout: 'A', images: g('gulf-launch', 3) },
+                sections: [],
+                video: null, logos: [], appendix: []
+            },
+            {
+                id: 'born-to-slay', cover: 'images/work-10.jpg',
+                client: 'Babyshop,', title: '“Born to Slay”',
+                credits: LB,
+                gallery: { layout: 'A', images: g('born-to-slay', 3) },
+                sections: [
+                    ['The idea', 'For a child, getting dressed is not simply about clothes. It is character creation.'],
+                    ['The film', 'We built the story around a child with the confidence of a star and the imagination of a director. Every look, gesture and movement became part of the performance.'],
+                    ['My contribution', 'I developed the character attitude, styling and visual rhythm, then translated that into a production language that gave the child’s imagination the same confidence as a fashion film.']
+                ],
+                video: 'videos/work/born-to-slay.mp4',
+                logos: BABY,
+                appendix: []
+            },
+            {
+                id: 'greetings-from-earth', cover: 'images/work-11.jpg',
+                client: 'Emirates,', title: '“Greetings from Earth”',
+                credits: LB,
+                gallery: { layout: 'A', images: g('greetings-from-earth', 3) },
+                sections: [
+                    ['The opportunity', 'Sultan Al Neyadi’s space mission created a historic UAE moment. Ramadan gave it an emotional one.'],
+                    ['The idea', 'Send the feeling of Ramadan beyond Earth. A little girl’s fascination with space became the bridge between an ordinary family at home and one Emirati spending Ramadan far beyond it.'],
+                    ['My contribution', 'I helped shape the emotional and visual contrast between home and space, then translated it into the film treatment across casting, environments, transitions, camera language, lighting and colour.'],
+                    ['Impact / proof', 'The campaign was independently featured by ArabAd and The Brandberries.']
+                ],
+                video: 'https://www.youtube.com/watch?v=w4VfNiu-euk',
+                logos: ['Emirates NBD', 'ArabAd', 'The Brandberries', 'Lovin Dubai', 'Leo Burnett'],
+                appendix: [
+                    ['Official campaign film:', 'https://www.youtube.com/watch?v=w4VfNiu-euk'],
+                    ['Official Emirates NBD LinkedIn post:', 'https://www.linkedin.com/posts/emirates-nbd_greetingsfromearth-sultanofspace-ramadan2023-activity-7046723874704474112-XhxE'],
+                    ['ArabAd feature:', 'https://www.arabaddigital.com/en/article/4034--GreetingsfromEarth-a-heartwarming-Ramadan-campaign-for-Emirates-NBD-honours-the-Emirati-astronaut-Sultan-Al-Neyadi'],
+                    ['The Brandberries feature:', 'https://thebrandberries.com/greetingsfromearth-this-ramadan-emirates-nbd-gets-the-whole-nation-to-wish-the-one-man-who-is-missing-from-the-uae/'],
+                    ['Leo Burnett team acknowledgement:', 'https://www.linkedin.com/posts/tahaab_ever-thought-about-how-ramadan-is-different-activity-7046824444207542272-Ahqp']
+                ]
+            },
+            {
+                id: 'naming-brand-positioning', cover: 'images/work-12.jpg',
+                client: 'JustNav,', title: '“Naming, Brand Positioning & Design System”',
+                credits: null,
+                gallery: { layout: 'wide', ratio: '1.9 / 1', images: g('naming-brand-positioning', 1) },
+                deck: { label: 'Download the Branding book', href: 'files/justnav-branding-book.pdf' },
+                split: 3,
+                sections: [
+                    ['The opportunity', 'Make indoor navigation feel simple and human, including for people with disabilities.'],
+                    ['The name', 'We wanted something that could become everyday language, not simply describe technology. JustNav came from a collaborative naming process built around movement, ease, discovery and accessibility. The ambition was that one day someone could simply say, “JustNav it”.'],
+                    ['The system', 'From there, I led the brand from purpose into a complete identity. The Ant-frame, character, typography, accessible colour system, photography and layouts were built as one scalable system across app interfaces, sensors, signage and communication.'],
+                    ['My contribution', 'This is the case where I would let the designer in me show. Grid, hierarchy, spacing, optical detail and accessibility all mattered, but every design choice came back to one job: make complicated technology easier to understand, remember and use.']
+                ],
+                video: null, logos: [], appendix: []
+            },
+            {
+                id: 'seeing-potential', cover: 'images/work-13.jpg',
+                client: 'Averda,', title: '“Seeing Potential”',
+                credits: { agency: 'Havas', roles: ['Creative Director Samer Lahoud', 'Art Director Syed Shuja Hussain'] },
+                gallery: { layout: 'duo', ratio: '1.65 / 1', images: g('seeing-potential', 2) },
+                sections: [
+                    ['The idea', 'Waste is only the end of something if that is all we choose to see.'],
+                    ['The creative direction', '‘Seeing Potential’ reframed discarded material as possibility: cleaner cities, stronger communities and new economic value.'],
+                    ['My contribution', 'I kept the visual language deliberately simple. Composition, scale, image selection, alignment, negative space and controlled lighting did the work, proving that a strong thought does not need a complicated execution.']
+                ],
+                video: null, logos: [], appendix: []
+            },
+            {
+                id: 'a-dads-job', cover: 'images/work-14.jpg',
+                client: 'Home Centre,', title: '“A Dad’s Job”',
+                credits: { agency: 'FP7 McCann', roles: ['Creative Director Aurindo Sen', 'Art Director Syed Shuja Hussain'] },
+                awardLogos: ['WARC', 'Dubai Lynx', 'Clio', 'Gerety', 'Caples', 'The One Show', 'Campaign', 'Little Black Book', 'Ads of the World', 'Creativepool'],
+                gallery: { layout: 'wide', ratio: '1.9 / 1', images: g('a-dads-job', 1) },
+                sections: [
+                    ['The starting point', 'A simple Father’s Day question: what does it really mean to do a dad’s job?'],
+                    ['The human truth', 'A personal story about a friend raised by a single mother changed the direction. We realised many mothers across the region were doing both jobs, yet Father’s Day rarely made space for their homes.'],
+                    ['The idea', 'Real children appeared to be speaking about their fathers. The reveal showed they were describing their mothers. One personal story became a wider conversation about recognition, family and the prejudice single mothers face.'],
+                    ['My contribution', 'I helped shape the art direction around real families rather than actors, working with the director on casting, environments, styling, framing and a natural observational film language.'],
+                    ['Impact / proof', 'WARC Awards for Effectiveness Grand Prix, Dubai Lynx Media Grand Prix, Clio Silver, Gerety Silver, Caples Silver and The One Show Merit.']
+                ],
+                video: 'https://www.youtube.com/watch?v=3vYs0mFtNoA',
+                logos: [],
+                appendix: [
+                    ['The One Show official project and credits', 'https://www.oneclub.org/awards/theoneshow/-/award/39910/a-dads-job/'],
+                    ['Syed Shuja Hussain’s One Show credit record', 'https://www.oneclub.org/awards/theoneshow/-/credit/121095/2021/21/4'],
+                    ['Official film', 'https://www.youtube.com/watch?v=3vYs0mFtNoA'],
+                    ['WARC Behind the Winning Idea', 'https://www.youtube.com/watch?v=juBCGlvHVOI'],
+                    ['Clio Awards Silver', 'https://clios.com/winners-gallery/details/12538'],
+                    ['Gerety Awards Silver', 'https://www.geretyawards.com/winners/2021/entry/69120/a-dad-s-job-home-centre'],
+                    ['Caples Awards result', 'https://caples.org/2021-winners-results/?cat=Radical+new+strategy&id=196'],
+                    ['Dubai Lynx Grand Prix coverage', 'https://campaignme.com/dubai-lynx-announces-winners/'],
+                    ['WARC Grand Prix coverage', 'https://www.brandingmasia.com/warc-awards-for-effectiveness-announces-inaugural-winners/'],
+                    ['Little Black Book feature', 'https://lbbonline.com/news/home-centre-shares-fathers-day-message-with-a-moving-twist'],
+                    ['Ads of the World archive', 'https://www.adsoftheworld.com/campaigns/a-dad-s-job'],
+                    ['Creativepool credit page', 'https://creativepool.com/cannes-lions-winners-2021/projects/a-dads-job-for-home-centre']
+                ]
+            },
+            {
+                id: 'believe-in-your-next', cover: 'images/work-15.jpg',
+                client: 'Emirates NBD Private Banking,', title: '“Believe in Your Next”',
+                credits: LB,
+                gallery: { layout: 'B', images: g('believe-in-your-next', 3) },
+                sections: [
+                    ['The strategic move', 'Take private banking beyond numbers, access and status, and focus on the ambition behind every financial decision.'],
+                    ['The idea', '‘The next’ became a premium creative world built around milestones, possibilities and legacies. The communication was less about wealth itself and more about what wealth allows people to move towards.'],
+                    ['My contribution', 'I translated the platform across print, photography and film, shaping grid, typography, image composition, styling and visual tone. I also worked closely with the film director and production team to carry the same sense of progress and possibility into the moving image.']
+                ],
+                video: 'https://www.youtube.com/watch?v=-U681zv4hr0',
+                logos: ['Emirates NBD Private Banking', 'Packshot Magazine', 'Moonlighting', 'Big Kahuna Films'],
+                appendix: [
+                    ['Official campaign film:', 'https://www.youtube.com/watch?v=-U681zv4hr0'],
+                    ['Official Emirates NBD film', 'https://www.youtube.com/watch?v=-U681zv4hr0'],
+                    ['Official Believe in Your Next platform', 'https://www.emiratesnbd.com/en/private-banking/believe-in-your-next'],
+                    ['Packshot Magazine production feature', 'https://www.packshotmag.com/live-feeds/moonlighting-shot-in-cape-town-emirates-nbd-by-virgil-ferragut/'],
+                    ['Moonlighting Commercials project page', 'https://www.moonlighting.co.za/commercial/emirates-nbd-banking/'],
+                    ['Extended director’s cut', 'https://vimeo.com/998697701'],
+                    ['Virgil Ferragut campaign premiere', 'https://www.instagram.com/reel/C94evScKhFZ/'],
+                    ['Pablo Clemente campaign premiere', 'https://www.instagram.com/reel/C-Z_UwiqAEs/'],
+                    ['Big Kahuna Films feature', 'https://www.instagram.com/reel/C-lNVkiyt3_/'],
+                    ['Moonlighting production feature', 'https://www.instagram.com/reel/DAQ4HAsKPMO/'],
+                    ['Viola Outdoor display', 'https://www.instagram.com/p/C-r7j0Xpbua/'],
+                    ['Creative-team acknowledgement', 'https://www.linkedin.com/posts/kalpesh-patankar-265a41b7_emiratesnbd-activity-7244239019427999745-uX8n']
+                ]
+            },
+            {
+                id: 'avoid-post-sale-denial', cover: 'images/work-16.jpg',
+                client: 'Home Centre,', title: '“Avoid Post-Sale Denial”',
+                credits: LB,
+                gallery: { layout: 'B', images: g('avoid-post-sale-denial', 3) },
+                sections: [
+                    ['The idea', 'Denial is the moment after a missed sale when you refuse to accept that the offer is actually gone.'],
+                    ['The film', 'We turned that stubborn disbelief into the comic engine. The character keeps trying to convince himself there is still a way back, letting small pauses and repeated reactions do the work.'],
+                    ['My contribution', 'I helped shape a controlled visual language around close-ups, screen direction, restrained movement and performance, keeping the comedy dry rather than overplayed.']
+                ],
+                video: 'https://www.youtube.com/watch?v=oLDvgYmmU6M',
+                logos: HC,
+                appendix: [
+                    ['Home Centre, “Avoid Post-Sale Denial” film', 'https://www.youtube.com/watch?v=oLDvgYmmU6M'],
+                    ['Home Centre “Stages of Post-Sale Heartache” campaign post', 'https://www.facebook.com/birth.tv/posts/homecentre-stages-of-grief-directed-by-nalleaxel-_____represented-by-birth/1725527846241446/'],
+                    ['Divyan Kriplani campaign post', 'https://www.linkedin.com/posts/divyan-kriplani-91443965_so-we-shot-this-recently-well-kinda-and-activity-7334082124339109888-H_da'],
+                    ['Production company post', 'https://www.instagram.com/p/Cdv8JXqoiHD/'],
+                    ['Dejavu Social campaign reference', 'https://www.instagram.com/p/DITDOZ9tocA/']
+                ]
+            },
+            {
+                id: 'make-more-room-for-ramadan', cover: 'images/work-17.jpg',
+                client: 'Home Centre,', title: '“Make More Room for Ramadan”',
+                credits: LB,
+                gallery: { layout: 'A', images: g('make-more-room-for-ramadan', 3) },
+                sections: [
+                    ['The opportunity', 'Ramadan changes the way a home is used. It becomes fuller, warmer and more social, with family, friends and guests coming together more often.'],
+                    ['The idea', '“Make More Room for Ramadan” turned that simple truth into the campaign thought. It was not only about making physical space in the home. It was about making room for people, generosity, togetherness and the moments that make Ramadan feel special.'],
+                    ['My contribution', 'I helped shape the visual world around warmth, family and contemporary Middle Eastern living. Working with the director and production team, I developed the art direction across casting, styling, interiors, composition, lighting and camera language, making the home feel aspirational while still lived-in and emotionally real.'],
+                    ['The result', 'The campaign gave Home Centre a natural role during Ramadan, connecting furniture and interiors to something more meaningful: creating space for the people and moments that matter most. The work was featured by Gulf News, Campaign Middle East and Harper’s Bazaar Arabia.']
+                ],
+                video: 'https://www.youtube.com/watch?v=N3bumRL0dys',
+                logos: ['Home Centre', 'Leo Burnett', 'INSITE OOH', 'Bahrain Confidential'],
+                appendix: [
+                    ['Official Home Centre film', 'https://www.youtube.com/watch?v=N3bumRL0dys'],
+                    ['Official Home Centre Instagram post', 'https://www.instagram.com/reel/C2H3xS1R13u/'],
+                    ['Gulf News launch coverage', 'https://gulfnews.com/uae/home-centre-unveils-its-ramadan-collection-1.1707372742495'],
+                    ['Gulf News campaign video', 'https://www.facebook.com/GulfNews.UAE/videos/home-centre-unveils-its-ramadan-collection/2584046918440741/'],
+                    ['Campaign Middle East expert selection', 'https://campaignme.com/industry-experts-share-their-favourite-unskippable-ads/'],
+                    ['Harper’s Bazaar Arabia coverage', 'https://www.harpersbazaararabia.com/culture/interiors/ramadan-refurb-explore-home-centres-stunning-new-collections-for-a-warm-and-elegant-celebration']
+                ]
+            },
+            {
+                id: 'like-a-boss', cover: 'images/work-18.jpg',
+                client: 'Babyshop,', title: '“Like a Boss”',
+                credits: LB,
+                gallery: { layout: 'A', images: g('like-a-boss', 3) },
+                sections: [
+                    ['The idea', 'Imagine a baby with the confidence, authority and attitude of a fully grown boss.'],
+                    ['The character world', 'The humour came from the contrast between age and personality. Expressions, behaviour and tiny reactions did most of the storytelling.'],
+                    ['My contribution', 'I developed the character personality and overall art direction, then shaped the animation brief across design, environments, camera perspectives, timing, transitions and colour so the baby did not simply look like a boss. He behaved like one.']
+                ],
+                video: 'videos/work/like-a-boss.mp4',
+                logos: BABY,
+                appendix: []
+            }
+        ];
+
+        /* ---------- VEXA CAMPAIGN PITCHES ---------- */
+        const slides = (folder, n) =>
+            Array.from({ length: n }, (_, i) => `images/pitches/${folder}/slide-${String(i + 1).padStart(2, '0')}.jpg`);
+
+        const PITCHES = [
+            {
+                id: 'campaign-1', cover: 'images/campaign-01.jpg',
+                client: 'Cola Next,', title: '“Tum sa next koi nahi - be your next”',
+                deck: 'files/pitch-cola-next.pdf',
+                video: { poster: 'images/pitches/cola-next/poster.jpg', src: 'videos/cola-next.mp4', alt: 'Cola Next — Tum Sa Next Koi Nahi' },
+                thumbs: slides('cola-next', 6),
+                intro: 'The brief appeared to ask for a campaign, but VEXA identified a larger opportunity: NEXT needed a clear brand direction, a bigger positioning and a stronger role inside Pakistan’s beverage culture.',
+                sections: [
+                    ['Positioning', 'Be Your Next', 'A brand built around individuality and self-belief'],
+                    ['Creative Platform', 'Tum Sa NEXT koi Nahi', 'No one can define your next better than you.']
+                ],
+                advantage: 'The core thinking was unlocked in 40 minutes. The complete brand direction was developed within a couple of hours.'
+            },
+            {
+                id: 'campaign-2', cover: 'images/campaign-02.jpg',
+                client: 'Dubai Health Authority,', title: '“Wellbeing, Designed In”',
+                deck: 'files/pitch-dha.pdf',
+                video: null,
+                thumbs: slides('dha', 12),
+                intro: 'The brief asked for a digital, social media and graphic design partner. VEXA identified the larger opportunity: make DHA’s health guidance easier to understand, access and act on every day.',
+                sections: [
+                    ['Opportunity', 'Move DHA from communication activity to measurable public action.'],
+                    ['Brand Truth', 'DHA is not only a health authority. It is the system that helps people take the next step for their health.'],
+                    ['Human Need', 'People do not need more complicated medical information. They need clear, trusted guidance that fits naturally into daily life.'],
+                    ['Brand Positioning', 'Dubai’s Trusted Health Authority', 'A people-first health authority that turns medical guidance into simple, bilingual and culturally relevant everyday action.'],
+                    ['North Star', 'Make health and the health system easy to understand, access and act on every day.'],
+                    ['Audience', 'Residents and Emirati families, digital hesitants, chronic-care audiences, health tourists, healthcare professionals, employers and payors.'],
+                    ['Strategic Pillars', 'Prevention as a habit', 'Digital health made simple', 'Trust and transparency', 'Inclusive health for a diverse Dubai', 'Health tourism excellence'],
+                    ['Communication System', 'VEXA connected always-on content with seasonal moments such as Ramadan, Hajj, summer heat, breast cancer and diabetes month.', 'This created a year-round system that could inform, reassure and move people towards screenings, bookings, telehealth sign-ups and digital-service adoption.'],
+                    ['Three Gates', 'Diagnose: audits, social listening, tensions and opportunities', 'Co-create: brand DNA, positioning, platforms and playbooks', 'Activate: campaigns, content, paid media, measurement and optimisation']
+                ],
+                advantage: 'The core strategic direction was unlocked in approximately 40 minutes. The complete response, from opportunity and brand positioning to communication architecture, audience logic and performance system, was developed within a couple of hours.'
+            },
+            {
+                id: 'campaign-3', cover: 'images/campaign-03.jpg',
+                client: 'Dubai Ambulance,', title: '“One Pulse. One System.”',
+                deck: 'files/pitch-dubai-ambulance.pdf',
+                video: { poster: 'images/pitches/dubai-ambulance/poster.jpg', src: 'videos/dubai-ambulance.mp4', alt: 'Dubai Ambulance — Our Manifesto' },
+                thumbs: slides('dubai-ambulance', 6),
+                intro: 'The brief was not simply about creating another healthcare campaign. VEXA identified the larger opportunity: Dubai’s healthcare system already functioned as one network, but visually it appeared fragmented.',
+                sections: [
+                    ['Context', 'Healthcare is a high-trust infrastructure category. In moments of crisis, people need clarity, authority and reassurance.'],
+                    ['Opportunity', 'Create one visual layer that connects Dubai’s hospitals, clinics, emergency units and healthcare touchpoints.'],
+                    ['Existing Equity', 'Dubai Ambulance already owned strong recognition through its red pulse symbol, government authority and 998 emergency identity.'],
+                    ['Strategic Thought', 'One Pulse. One System.', 'The pulse became more than a Dubai Ambulance graphic. It became a visible symbol of coordinated healthcare across the emirate.'],
+                    ['Brand Role', 'Dubai Ambulance would act as the endorsement layer, connecting individual healthcare institutions without replacing their identities.'],
+                    ['Design Translation', 'The pulse was transformed into a scalable system for wayfinding, signage, digital interfaces, communication materials and outdoor campaigns.'],
+                    ['System Logic', 'Pulse as a directional line', 'Pulse as an endorsement strip', 'Pulse as a digital progress cue', 'Pulse as a citywide visual anchor'],
+                    ['Communication Impact', 'The system shifts perception from separate services to one connected healthcare infrastructure, reinforcing trust, coordination and public confidence.']
+                ],
+                advantage: 'VEXA connected the context, opportunity, existing brand equity, strategic platform and design system into one clear direction in approximately 40 minutes. The full proposal was developed within a couple of hours.'
+            }
+        ];
+
+        /* =====================================================================
+           HELPERS
+        ===================================================================== */
+        const $ = (id) => document.getElementById(id);
+        const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        const plain = (s) => s.replace(/,$/, '');
+
+        const ICON = {
+            left:  '<svg viewBox="0 0 40 14" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M39 7H1M7 1 1 7l6 6"/></svg>',
+            right: '<svg viewBox="0 0 40 14" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M1 7h38M33 1l6 6-6 6"/></svg>',
+            diag:  '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="square" aria-hidden="true"><path d="M10 10 54 54M54 20v34H20"/></svg>',
+            play:  '<svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M6 3.5v17l14-8.5z"/></svg>'
+        };
+
+        const logoImg = (name) => `<img class="logo" src="images/logos/${slug(name)}.png" alt="${esc(name)}" data-name="${esc(name)}" loading="lazy">`;
+
+        /* broken images: grey tile for photos, text label for logos */
+        document.addEventListener('error', (e) => {
+            const img = e.target;
+            if (img.tagName !== 'IMG') return;
+            if (img.classList.contains('logo')) {
+                const span = document.createElement('span');
+                span.className = 'logo-text';
+                span.textContent = img.dataset.name;
+                img.replaceWith(span);
+            } else if (img.closest('.tile')) {
+                img.closest('.tile').classList.add('missing');
+            }
+        }, true);
+
+        function embedFor(url) {
+            const m = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]{6,})/);
+            return m ? `https://www.youtube-nocookie.com/embed/${m[1]}?autoplay=1&rel=0` : null;
+        }
+
+        /* =====================================================================
+           HOME: work grid + campaign tiles
+        ===================================================== */
+        $('work-grid').innerHTML = PROJECTS.map((p) => `
+            <a class="work-card" href="#project/${p.id}" aria-label="${esc(plain(p.client))} ${esc(p.title)}">
+                <img src="${esc(p.cover)}" alt="" loading="lazy">
+                <span class="card-caption">
+                    <span class="card-client">${esc(p.client)}${p.extra ? '<br>' + esc(p.extra) : ''}</span>
+                    <span class="card-title">${esc(p.title)}</span>
+                </span>
+            </a>`).join('');
+
+        $('campaign-grid').innerHTML = PITCHES.map((p) => `
+            <a class="tile" href="#pitch/${p.id}" aria-label="View campaign: ${esc(plain(p.client))} — ${esc(p.title)}">
+                <img src="${esc(p.cover)}" alt="" loading="lazy">
+            </a>`).join('');
+
+        const cards = [...document.querySelectorAll('.work-card')];
+        const reveal = new IntersectionObserver((entries) => {
+            entries.forEach((en) => {
+                if (!en.isIntersecting) return;
+                const card = en.target;
+                card.style.transitionDelay = ((cards.indexOf(card) % 3) * 60) + 'ms';
+                card.classList.add('in');
+                setTimeout(() => { card.style.transitionDelay = ''; }, 900);
+                reveal.unobserve(card);
+            });
+        }, { threshold: 0.08 });
+        cards.forEach((c) => reveal.observe(c));
+
+        /* =====================================================================
+           DETAIL: project page
+        ===================================================== */
+        function projectHTML(p, i) {
+            const prev = PROJECTS[i - 1];
+            const next = PROJECTS[i + 1];
+
+            const credits = p.credits ? `
+                <div class="credits">
+                    <div class="agency">${esc(p.credits.agency)}</div>
+                    ${p.credits.roles.map((r) => `<div class="role">${esc(r)}</div>`).join('')}
+                </div>` : '';
+
+            const awards = p.awardLogos ? `<div class="awards">${p.awardLogos.map(logoImg).join('')}</div>` : '';
+
+            const tiles = p.gallery.images.map((src, n) =>
+                `<div class="tile"><img src="${esc(src)}" alt="${esc(plain(p.client))} ${esc(p.title)} — image ${n + 1}" loading="lazy"></div>`).join('');
+            const ratio = p.gallery.ratio ? ` style="--ratio:${p.gallery.ratio}"` : '';
+            const gallery = `<div class="gallery ${p.gallery.layout}"${ratio}>${tiles}</div>`;
+
+            const deck = p.deck ? `<a class="pill solid p-deck" href="${esc(p.deck.href)}" download>${esc(p.deck.label)}</a>` : '';
+            const secHTML = (list) => list.map(([h, t]) => `<div class="sec"><h3>${esc(h)}</h3><p>${esc(t)}</p></div>`).join('');
+
+            let body = '';
+            if (p.video) {
+                body = `
+                <div class="p-body">
+                    <div class="col">${secHTML(p.sections)}</div>
+                    <div class="col">
+                        <div class="video-card">
+                            <div class="video-frame" data-src="${esc(p.video)}">
+                                <img src="images/work/${p.id}/poster.jpg" alt="${esc(plain(p.client))} ${esc(p.title)} — film poster">
+                                <button class="play-btn" type="button" aria-label="Play film">${ICON.play}<span>click to play</span></button>
+                            </div>
+                        </div>
+                        <div class="logos">${p.logos.map(logoImg).join('')}</div>
+                    </div>
+                </div>`;
+            } else if (p.split) {
+                body = `
+                <div class="p-body split">
+                    <div class="col">${secHTML(p.sections.slice(0, p.split))}</div>
+                    <div class="col">${secHTML(p.sections.slice(p.split))}</div>
+                </div>
+                ${p.logos.length ? `<div class="logos left${p.logosSmall ? ' small' : ''}">${p.logos.map(logoImg).join('')}</div>` : ''}`;
+            } else if (p.sections.length) {
+                body = `<div class="p-body solo"><div class="col">${secHTML(p.sections)}</div></div>`;
+            }
+
+            const appendix = p.appendix.length ? `
+                <section class="appendix" aria-label="Appendix">
+                    <h2>Appendix</h2>
+                    <ul>${p.appendix.map(([label, url]) =>
+                        `<li><b>${esc(label)}</b><a href="${esc(url)}" target="_blank" rel="noopener">${esc(url)}</a></li>`).join('')}</ul>
+                </section>` : '';
+
+            return `
+                <hr class="rule">
+                <a class="back-link" href="#work">Work</a>
+
+                <div class="d-head">
+                    <h1 class="d-title">
+                        <span class="d-client">${esc(p.client)}</span>
+                        <span class="d-name">${p.extra ? `<span class="extra">${esc(p.extra)}</span> ` : ''}${esc(p.title)}</span>
+                    </h1>
+                    <nav class="d-nav" aria-label="Projects">
+                        ${prev ? `<a href="#project/${prev.id}">${ICON.left} Previous Project</a>` : ''}
+                        ${next ? `<a href="#project/${next.id}">Next Project ${ICON.right}</a>` : ''}
+                    </nav>
+                </div>
+
+                ${credits}${awards}${gallery}${deck}${body}${appendix}
+                <hr class="rule p-end">`;
+        }
+
+        /* =====================================================================
+           DETAIL: VEXA pitch page
+        ===================================================== */
+        function pitchHTML(p, i) {
+            const prev = PITCHES[i - 1];
+            const next = PITCHES[(i + 1) % PITCHES.length];
+
+            const items = p.sections.map(([label, ...lines]) =>
+                `<div class="brief-item"><h4>${esc(label)}</h4>${lines.map((l) => `<p>${esc(l)}</p>`).join('')}</div>`).join('');
+
+            const video = p.video ? `
+                <div class="video-card">
+                    <div class="video-frame" data-src="${esc(p.video.src)}">
+                        <img src="${esc(p.video.poster)}" alt="${esc(p.video.alt)}">
+                        <button class="play-btn" type="button" aria-label="Play video: ${esc(p.video.alt)}">${ICON.play}<span>click to play</span></button>
+                    </div>
+                </div>` : '';
+
+            const thumbs = p.thumbs.map((src, n) =>
+                `<button class="thumb tile" type="button" data-index="${n}" aria-label="Enlarge slide ${n + 1}">
+                    <img src="${esc(src)}" alt="${esc(plain(p.client))} slide ${n + 1}" loading="lazy">
+                </button>`).join('');
+
+            return `
+                <hr class="rule">
+                <a class="back-link" href="#about">Campaigns Powered by VEXA</a>
+
+                <div class="d-head">
+                    <div>
+                        <h1 class="d-title">
+                            <span class="d-client">${esc(p.client)}</span>
+                            <span class="d-name">${esc(p.title)}</span>
+                        </h1>
+                        <a class="pill solid" href="${esc(p.deck)}" download>Download the pitch deck</a>
+                        <p class="pitch-copy">© 2026 Syed Shuja Hussain &amp; VEXA. All pitch concepts and creative work are protected.<br>Unauthorised use or reproduction is strictly prohibited.</p>
+                    </div>
+                    <nav class="d-nav" aria-label="Pitches">
+                        ${prev ? `<a href="#pitch/${prev.id}">${ICON.left} Previous Pitch</a>` : ''}
+                        <a href="#pitch/${next.id}">Next Pitch ${ICON.right}</a>
+                    </nav>
+                </div>
+
+                <div class="pitch-body">
+                    <section aria-label="How VEXA unlocked the brief">
+                        <h2 class="brief-h">How VEXA Unlocked the Brief</h2>
+                        <p class="brief-intro">${esc(p.intro)}</p>
+                        ${items}
+                        <div class="advantage">
+                            <h3>VEXA Advantage</h3>
+                            <p>${esc(p.advantage)}</p>
+                        </div>
+                    </section>
+
+                    <section aria-label="Pitch visuals">
+                        ${video}
+                        <div class="thumbs${p.video ? ' indent' : ''}">${thumbs}</div>
+                    </section>
+                </div>
+
+                <footer class="pitch-footer">
+                    <div>
+                        <hr class="rule">
+                        <small>this website is powered by VEXA® &amp; develop by webstings</small>
+                        <small>All rights reserved @ TheShuj.com 2026</small>
+                        <small>United Arab Emirates | United States | Pakistan</small>
+                    </div>
+                    <div class="footer-brand" aria-hidden="true"><span class="shuj">The Shuj</span><i></i><span class="vexa-word">vexa</span></div>
+                    <a class="big-arrow" href="#pitch/${next.id}" aria-label="Next pitch">${ICON.diag}</a>
+                </footer>`;
+        }
+
+        /* =====================================================================
+           ROUTER
+           #hello · #work · #about · #contact   → home view, scrolls to section
+           #project/<id>                         → work project page
+           #pitch/<id>                           → VEXA campaign pitch page
+        ===================================================== */
+        const homeView = $('home-view');
+        const detailView = $('detail-view');
+        const SECTIONS = ['hello', 'work', 'about', 'contact'];
+        let cur = { type: 'home', index: -1 };
+
+        function parseHash() {
+            const h = decodeURIComponent(location.hash.replace(/^#/, ''));
+            let m;
+            if ((m = h.match(/^project\/(.+)$/))) {
+                const index = PROJECTS.findIndex((p) => p.id === m[1]);
+                if (index > -1) return { type: 'project', index };
+            }
+            if ((m = h.match(/^pitch\/(.+)$/))) {
+                const index = PITCHES.findIndex((p) => p.id === m[1]);
+                if (index > -1) return { type: 'pitch', index };
+            }
+            return { type: 'home', section: SECTIONS.includes(h) ? h : '' };
+        }
+
+        function route() {
+            const r = parseHash();
+            const wasDetail = cur.type !== 'home';
+            cur = r;
+
+            if (r.type === 'home') {
+                detailView.hidden = true;
+                homeView.hidden = false;
+                document.body.dataset.view = 'home';
+                document.title = 'Syed Shuja — Portfolio';
+
+                requestAnimationFrame(() => {
+                    const el = r.section && $(r.section);
+                    if (el) el.scrollIntoView({ behavior: wasDetail ? 'instant' : 'smooth', block: 'start' });
+                    else if (wasDetail) window.scrollTo({ top: 0, behavior: 'instant' });
+                });
+                onScroll();
+                return;
+            }
+
+            const render = () => {
+                homeView.hidden = true;
+                detailView.hidden = false;
+                detailView.innerHTML = r.type === 'project'
+                    ? projectHTML(PROJECTS[r.index], r.index)
+                    : pitchHTML(PITCHES[r.index], r.index);
+                document.body.dataset.view = 'detail';
+                document.title = r.type === 'project'
+                    ? `${plain(PROJECTS[r.index].client)} ${PROJECTS[r.index].title} — Syed Shuja`
+                    : `${plain(PITCHES[r.index].client)} — Campaigns Powered by VEXA`;
+                window.scrollTo({ top: 0, behavior: 'instant' });
+                onScroll();
+                requestAnimationFrame(() => detailView.classList.remove('fade'));
+            };
+
+            detailView.classList.add('fade');
+            wasDetail ? setTimeout(render, 260) : render();
+        }
+
+        window.addEventListener('hashchange', route);
+
+        /* =====================================================================
+           VIDEO + LIGHTBOX (inside detail pages)
+        ===================================================== */
+        const lb = { el: $('lightbox'), img: $('lb-img'), list: [], i: 0 };
+
+        function lbShow(i) { lb.i = (i + lb.list.length) % lb.list.length; lb.img.src = lb.list[lb.i]; }
+        function lbOpen(list, i) { lb.list = list; lbShow(i); lb.el.classList.add('open'); document.body.classList.add('lock'); $('lb-close').focus(); }
+        function lbClose() { lb.el.classList.remove('open'); document.body.classList.remove('lock'); }
+
+        detailView.addEventListener('click', (e) => {
+            const play = e.target.closest('.play-btn');
+            if (play) {
+                const frame = play.closest('.video-frame');
+                const src = frame.dataset.src;
+                const embed = embedFor(src);
+                let el;
+                if (embed) {
+                    el = document.createElement('iframe');
+                    el.src = embed;
+                    el.allow = 'autoplay; fullscreen; picture-in-picture';
+                    el.allowFullscreen = true;
+                    el.title = 'Film';
+                } else {
+                    el = document.createElement('video');
+                    el.src = src;
+                    el.controls = true;
+                    el.autoplay = true;
+                    el.playsInline = true;
+                }
+                frame.replaceChildren(el);
+                return;
+            }
+
+            const thumb = e.target.closest('.thumb');
+            if (thumb && cur.type === 'pitch') lbOpen(PITCHES[cur.index].thumbs, Number(thumb.dataset.index));
+        });
+
+        $('lb-close').addEventListener('click', lbClose);
+        $('lb-prev').addEventListener('click', () => lbShow(lb.i - 1));
+        $('lb-next').addEventListener('click', () => lbShow(lb.i + 1));
+        lb.el.addEventListener('click', (e) => { if (e.target === lb.el) lbClose(); });
+
+        let touchX = null;
+        lb.el.addEventListener('touchstart', (e) => { touchX = e.touches[0].clientX; }, { passive: true });
+        lb.el.addEventListener('touchend', (e) => {
+            if (touchX === null) return;
+            const dx = e.changedTouches[0].clientX - touchX;
+            if (Math.abs(dx) > 50) lbShow(lb.i + (dx < 0 ? 1 : -1));
+            touchX = null;
+        }, { passive: true });
+
+        /* =====================================================================
+           KEYBOARD
+           ← → between projects / pitches · Esc closes things, then goes back
+        ===================================================== */
+        document.addEventListener('keydown', (e) => {
+            if (lb.el.classList.contains('open')) {
+                if (e.key === 'Escape') lbClose();
+                if (e.key === 'ArrowLeft') lbShow(lb.i - 1);
+                if (e.key === 'ArrowRight') lbShow(lb.i + 1);
+                return;
+            }
+
+            if (e.key === 'Escape') {
+                if (navOverlay.classList.contains('open')) toggleMenu(false);
+                else if (cur.type === 'project') location.hash = 'work';
+                else if (cur.type === 'pitch') location.hash = 'about';
+                return;
+            }
+
+            if (navOverlay.classList.contains('open')) return;
+
+            if (cur.type === 'project') {
+                if (e.key === 'ArrowRight' && PROJECTS[cur.index + 1]) location.hash = 'project/' + PROJECTS[cur.index + 1].id;
+                if (e.key === 'ArrowLeft'  && PROJECTS[cur.index - 1]) location.hash = 'project/' + PROJECTS[cur.index - 1].id;
+            } else if (cur.type === 'pitch') {
+                if (e.key === 'ArrowRight') location.hash = 'pitch/' + PITCHES[(cur.index + 1) % PITCHES.length].id;
+                if (e.key === 'ArrowLeft' && PITCHES[cur.index - 1]) location.hash = 'pitch/' + PITCHES[cur.index - 1].id;
+            }
+        });
+
+        /* =====================================================================
+           MENU + SCROLL STATE
+        ===================================================== */
+        const menuBtn = $('menu-btn');
+        const navOverlay = $('nav-overlay');
+        const topBar = $('top-bar');
+        const navLogo = $('nav-logo');
+
+        function toggleMenu(force) {
+            const open = typeof force === 'boolean' ? force : !navOverlay.classList.contains('open');
+            menuBtn.classList.toggle('open', open);
+            navOverlay.classList.toggle('open', open);
+            menuBtn.setAttribute('aria-expanded', String(open));
+            document.body.classList.toggle('lock', open);
+        }
+
+        menuBtn.addEventListener('click', () => toggleMenu());
+        $('menu-label').addEventListener('click', () => toggleMenu());
+
+        navOverlay.querySelectorAll('a').forEach((a) => a.addEventListener('click', (e) => {
+            e.preventDefault();
+            toggleMenu(false);
+            const id = a.dataset.go;
+            if (location.hash === '#' + id) route();      // same hash → hashchange won't fire
+            else location.hash = id;
+        }));
+
+        function onScroll() {
+            topBar.classList.toggle('scrolled', window.scrollY > 24);
+            navLogo.classList.toggle('gone', window.scrollY > window.innerHeight * 0.45);
+        }
+        window.addEventListener('scroll', onScroll, { passive: true });
+
+        /* =====================================================================
+           HERO: mobile logo slicing · photo cutout · parallax
+        ===================================================== */
+        function sliceLogos(img, rowGapF, colGapF, crops) {
+            const W = img.naturalWidth, H = img.naturalHeight;
+            const c = document.createElement('canvas');
+            c.width = W; c.height = H;
+            const ctx = c.getContext('2d');
+            ctx.drawImage(img, 0, 0);
+            const d = ctx.getImageData(0, 0, W, H).data;          // throws on file://
+            const ink = (x, y) => {
+                const p = (y * W + x) * 4;
+                return d[p + 3] > 20 && (d[p] + d[p + 1] + d[p + 2]) / 3 < 225;
+            };
+
+            const tight = (x0, y0, x1, y1) => {
+                let ax = x1, bx = x0, ay = y1, by = y0;
+                for (let y = y0; y <= y1; y++)
+                    for (let x = x0; x <= x1; x++)
+                        if (ink(x, y)) {
+                            if (x < ax) ax = x;
+                            if (x > bx) bx = x;
+                            if (y < ay) ay = y;
+                            if (y > by) by = y;
+                        }
+                return { x: ax, y: ay, w: bx - ax + 1, h: by - ay + 1 };
+            };
+
+            const bands = (len, has, gap) => {
+                const out = []; let start = -1, last = -1;
+                for (let i = 0; i < len; i++) {
+                    if (!has(i)) continue;
+                    if (start < 0) start = i;
+                    else if (i - last > gap) { out.push([start, last]); start = i; }
+                    last = i;
+                }
+                if (start >= 0) out.push([start, last]);
+                return out;
+            };
+
+            const rowInk = new Array(H).fill(0);
+            for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) if (ink(x, y)) rowInk[y]++;
+
+            const boxes = [];
+            bands(H, (y) => rowInk[y] >= 2, rowGapF * H).forEach(([y0, y1]) => {
+                const colInk = new Array(W).fill(0);
+                for (let x = 0; x < W; x++) for (let y = y0; y <= y1; y++) if (ink(x, y)) colInk[x]++;
+                bands(W, (x) => colInk[x] >= 2, colGapF * W).forEach(([x0, x1]) => boxes.push(tight(x0, y0, x1, y1)));
+            });
+
+            Object.entries(crops || {}).forEach(([i, f]) => {
+                const b = boxes[i];
+                if (b) boxes[i] = tight(b.x + Math.round(f * b.w), b.y, b.x + b.w - 1, b.y + b.h - 1);
+            });
+
+            return boxes.map((b) => {
+                const cc = document.createElement('canvas');
+                cc.width = b.w; cc.height = b.h;
+                cc.getContext('2d').drawImage(img, b.x, b.y, b.w, b.h, 0, 0, b.w, b.h);
+                return cc.toDataURL('image/png');
+            });
+        }
+
+        function buildStack(colId, imgId, boxId, expected, rowGapF, colGapF, rows, align, crops) {
+            const col = $(colId), img = $(imgId), box = $(boxId);
+
+            const run = () => {
+                try {
+                    const logos = sliceLogos(img, rowGapF, colGapF, crops);
+                    if (logos.length !== expected) return;           // different logo count → keep flat image
+                    rows.forEach(({ r: items, a, mt = 0, pl = 0, pr = 0 }) => {
+                        const row = document.createElement('div');
+                        row.className = 'm-row';
+                        row.style.marginTop = mt + 'cqw';
+                        row.style.justifyContent = items.length > 1 ? 'space-between' : (a || align);
+                        items.forEach(([i, w], k) => {
+                            const el = document.createElement('img');
+                            el.src = logos[i];
+                            el.alt = '';
+                            el.style.width = w + '%';
+                            if (k === 0) el.style.marginLeft = pl + 'cqw';
+                            if (k === items.length - 1) el.style.marginRight = pr + 'cqw';
+                            row.appendChild(el);
+                        });
+                        box.appendChild(row);
+                    });
+                    col.classList.add('sliced');
+                } catch (err) { /* keep the flat image */ }
+            };
+
+            if (img.complete && img.naturalWidth) run();
+            else img.addEventListener('load', run, { once: true });
+        }
+
+        // LEFT: Ferrero, Pepsi, Visa, McDonald's, Burger King, Mastercard, KFC, Sanofi
+        buildStack('brands-col', 'brands-img', 'brands-m', 8, 0.08, 0.025, [
+            { r: [[4, 42], [1, 39]], mt: 0.4 },
+            { r: [[3, 43]], a: 'flex-end', mt: 0.9 },
+            { r: [[0, 99]], mt: 2.8 },
+            { r: [[2, 46], [6, 33]], mt: 2.1 },
+            { r: [[7, 54], [5, 28]], mt: 2.2, pl: 1.1, pr: 0.6 }
+        ], 'flex-start');
+
+        // RIGHT: Havas, DWTC, Ogilvy, Leo Burnett, Impact BBDO, Publicis, TBWA, FP7
+        buildStack('agencies-col', 'agencies-img', 'agencies-m', 8, 0.03, 0.05, [
+            { r: [[1, 77]], mt: 1.45, pr: 0.4 },
+            { r: [[3, 90]], mt: 1.8 },
+            { r: [[5, 68]], mt: 2.0, pr: 1.3 },
+            { r: [[2, 48]], mt: 2.3, pr: 1.4 },
+            { r: [[6, 70]], mt: 3.4, pr: 0.6 },
+            { r: [[4, 82]], mt: 3.3 },
+            { r: [[7, 74]], mt: 3.0, pr: 0.2 },
+            { r: [[0, 77]], mt: 2.6, pr: 0.4 }
+        ], 'flex-end', { 1: 0.33 });
+
+        // AUTO CUTOUT: removes the white photo background
+        const personImg = $('person-img');
+        const personWrapper = $('person-container');
+        const WHITE_LIMIT = 215;
+        const MAX_SIDE = 1800;
+        let cutoutDone = false;
+
+        function makeCutout() {
+            if (cutoutDone) return;
+            cutoutDone = true;
+
+            try {
+                const scale = Math.min(1, MAX_SIDE / Math.max(personImg.naturalWidth, personImg.naturalHeight));
+                const w = Math.round(personImg.naturalWidth * scale);
+                const h = Math.round(personImg.naturalHeight * scale);
+
+                const canvas = document.createElement('canvas');
+                canvas.width = w;
+                canvas.height = h;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(personImg, 0, 0, w, h);
+
+                const imgData = ctx.getImageData(0, 0, w, h);   // throws on file://
+                const px = imgData.data;
+
+                const isBg = (i) => {
+                    const p = i * 4;
+                    return px[p + 3] < 10 ||
+                           (px[p] > WHITE_LIMIT && px[p + 1] > WHITE_LIMIT && px[p + 2] > WHITE_LIMIT);
+                };
+
+                const removed = new Uint8Array(w * h);
+                const stack = [];
+                const seed = (i) => { if (!removed[i] && isBg(i)) { removed[i] = 1; stack.push(i); } };
+
+                for (let x = 0; x < w; x++) { seed(x); seed((h - 1) * w + x); }
+                for (let y = 0; y < h; y++) { seed(y * w); seed(y * w + w - 1); }
+
+                while (stack.length) {
+                    const i = stack.pop();
+                    const x = i % w, y = (i / w) | 0;
+                    if (x > 0)     seed(i - 1);
+                    if (x < w - 1) seed(i + 1);
+                    if (y > 0)     seed(i - w);
+                    if (y < h - 1) seed(i + w);
+                }
+
+                for (let i = 0; i < w * h; i++) {
+                    if (removed[i]) { px[i * 4 + 3] = 0; continue; }
+                    const x = i % w, y = (i / w) | 0;
+                    const nearBg = (x > 0 && removed[i - 1]) || (x < w - 1 && removed[i + 1]) ||
+                                   (y > 0 && removed[i - w]) || (y < h - 1 && removed[i + w]);
+                    if (nearBg) {
+                        const lum = (px[i * 4] + px[i * 4 + 1] + px[i * 4 + 2]) / 3;
+                        if (lum > 170) px[i * 4 + 3] = Math.max(0, Math.min(255, (255 - lum) * 3));
+                    }
+                }
+
+                ctx.putImageData(imgData, 0, 0);
+                personImg.addEventListener('load', () => personImg.classList.add('ready'), { once: true });
+                personImg.src = canvas.toDataURL('image/png');
+            } catch (err) {
+                personWrapper.classList.add('fallback');
+                personImg.classList.add('ready');
+            }
+        }
+
+        personImg.addEventListener('error', () => personImg.classList.add('ready'), { once: true });
+
+        if (personImg.complete && personImg.naturalWidth) makeCutout();
+        else personImg.addEventListener('load', makeCutout, { once: true });
+
+        // MOUSE PARALLAX (desktop, home view only)
+        const titleLeft = document.querySelector('.huge-title-left');
+        const titleRight = document.querySelector('.huge-title-right');
+
+        document.addEventListener('mousemove', (e) => {
+            if (window.innerWidth <= 900 || document.body.dataset.view !== 'home') return;
+
+            const x = (e.clientX / window.innerWidth  - 0.5) * 2;
+            const y = (e.clientY / window.innerHeight - 0.5) * 2;
+
+            [titleLeft, titleRight].forEach((t) => {
+                t.style.setProperty('--px', (x * 14) + 'px');
+                t.style.setProperty('--py', (y * 8) + 'px');
+            });
+
+            personWrapper.style.setProperty('--px', (x * -18) + 'px');
+            personWrapper.style.setProperty('--py', (y * -8) + 'px');
+            navLogo.style.transform = `translate(${x * -4}px, ${y * -4}px)`;
+        });
+
+        /* =====================================================================
+           START
+        ===================================================== */
+        route();
+        onScroll();
+    </script>
+
+</body>
+</html>
