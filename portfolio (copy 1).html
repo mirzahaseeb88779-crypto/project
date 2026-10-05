@@ -60,8 +60,8 @@
 
         body.lock { overflow: hidden; }
 
-        img { max-width: 100%; }
         a { color: inherit; }
+        .detail img, .vexa-card img { max-width: 100%; }
         :focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 4px; }
 
         /* =====================================================
@@ -265,7 +265,7 @@
             transform: translateX(-50%) translate(var(--px, 0px), var(--py, 0px)) rotate(var(--person-tilt));
         }
 
-        .person-wrapper img { height: 100%; width: auto; display: block; filter: grayscale(1) contrast(1.1); opacity: 0; }
+        .person-wrapper img { height: 100%; width: auto; max-width: none; display: block; filter: grayscale(1) contrast(1.1); opacity: 0; }
         .person-wrapper img.ready { opacity: 1; }
         .person-wrapper.fallback { mix-blend-mode: multiply; }
 
@@ -354,10 +354,10 @@
         .work-card:hover::after { background: rgba(0, 0, 0, .58); }
         .work-card:hover img { transform: scale(1.055); }
 
-        .card-caption { position: absolute; z-index: 2; left: 55%; top: 50%; width: 38%; transform: translateY(-50%); }
+        .card-caption { position: absolute; z-index: 2; left: 50%; top: 50%; width: 86%; transform: translate(-50%, -50%); text-align: center; }
         .card-client { display: block; margin-bottom: 5px; font-family: var(--serif); font-size: clamp(20px, 2vw, 28px); line-height: 1.02; }
         .card-title  { display: block; font-family: var(--serif); font-size: 15px; line-height: 1.12; }
-        .card-caption::after { content: ''; display: block; width: 31px; height: 2px; margin-top: 13px; background: #fff; }
+        .card-caption::after { content: ''; display: block; width: 31px; height: 2px; margin: 13px auto 0; background: #fff; }
 
         /* =====================================================
            ABOUT (home)
@@ -725,7 +725,7 @@
             .work-home { padding-left: 28px; padding-right: 28px; }
             .work-grid { gap: 4px; }
             .work-card { height: 330px; }
-            .card-caption { left: 50%; width: 45%; }
+            .card-caption { width: 86%; }
         }
 
         @media (max-width: 1100px) {
@@ -774,6 +774,7 @@
             }
 
             .mbr { display: inline; }
+            .dt { display: none; }
             .subtitle { font-size: max(8px, 1.85cqw); line-height: 1.1; margin-bottom: 0.5cqw; }
             .left-column .subtitle  { padding-right: 1.5cqw; }
             .right-column .subtitle { padding-left: 3.5cqw; }
@@ -793,7 +794,7 @@
             .work-intro { max-width: 94%; font-size: 14px; line-height: 1.08; margin-bottom: 20px; }
             .work-grid { gap: 3px; }
             .work-card { height: auto; aspect-ratio: 311 / 302; }
-            .card-caption { left: 48%; width: 48%; transform: translate(-2%, -50%); }
+            .card-caption { width: 90%; }
             .card-client { font-size: clamp(13px, 3.4vw, 21px); margin-bottom: 3px; }
             .card-title { font-size: clamp(9px, 2.35vw, 14px); line-height: 1.08; }
             .card-caption::after { width: 22px; margin-top: 8px; }
@@ -822,7 +823,7 @@
             :root { --gutter: 16px; }
             .work-home { padding-left: 7px; padding-right: 7px; }
             .work-grid { gap: 2px; }
-            .card-caption { left: 46%; width: 51%; }
+            .card-caption { width: 92%; }
             .card-client { font-size: 12px; }
             .card-title { font-size: 8.5px; }
 
@@ -911,7 +912,7 @@
                 </div>
 
                 <div class="column left-column" id="brands-col">
-                    <div class="subtitle">crafted brands<br class="mbr"> y'all love</div>
+                    <div class="subtitle">crafted brand<span class="dt">s</span><br class="mbr"> y'all love</div>
                     <img class="logo-img" id="brands-img" src="images/Untitled-1.png" alt="Brand logos">
                     <div class="m-logos" id="brands-m"></div>
                 </div>
@@ -1517,7 +1518,7 @@
 
         /* =====================================================================
            HOME: work grid + campaign tiles
-        ===================================================== */
+        ===================================================================== */
         $('work-grid').innerHTML = PROJECTS.map((p) => `
             <a class="work-card" href="#project/${p.id}" aria-label="${esc(plain(p.client))} ${esc(p.title)}">
                 <img src="${esc(p.cover)}" alt="" loading="lazy">
@@ -1547,7 +1548,7 @@
 
         /* =====================================================================
            DETAIL: project page
-        ===================================================== */
+        ===================================================================== */
         function projectHTML(p, i) {
             const prev = PROJECTS[i - 1];
             const next = PROJECTS[i + 1];
@@ -1622,7 +1623,7 @@
 
         /* =====================================================================
            DETAIL: VEXA pitch page
-        ===================================================== */
+        ===================================================================== */
         function pitchHTML(p, i) {
             const prev = PITCHES[i - 1];
             const next = PITCHES[(i + 1) % PITCHES.length];
@@ -1696,7 +1697,7 @@
            #hello · #work · #about · #contact   → home view, scrolls to section
            #project/<id>                         → work project page
            #pitch/<id>                           → VEXA campaign pitch page
-        ===================================================== */
+        ===================================================================== */
         const homeView = $('home-view');
         const detailView = $('detail-view');
         const SECTIONS = ['hello', 'work', 'about', 'contact'];
@@ -1759,7 +1760,7 @@
 
         /* =====================================================================
            VIDEO + LIGHTBOX (inside detail pages)
-        ===================================================== */
+        ===================================================================== */
         const lb = { el: $('lightbox'), img: $('lb-img'), list: [], i: 0 };
 
         function lbShow(i) { lb.i = (i + lb.list.length) % lb.list.length; lb.img.src = lb.list[lb.i]; }
@@ -1811,7 +1812,7 @@
         /* =====================================================================
            KEYBOARD
            ← → between projects / pitches · Esc closes things, then goes back
-        ===================================================== */
+        ===================================================================== */
         document.addEventListener('keydown', (e) => {
             if (lb.el.classList.contains('open')) {
                 if (e.key === 'Escape') lbClose();
@@ -1840,7 +1841,7 @@
 
         /* =====================================================================
            MENU + SCROLL STATE
-        ===================================================== */
+        ===================================================================== */
         const menuBtn = $('menu-btn');
         const navOverlay = $('nav-overlay');
         const topBar = $('top-bar');
@@ -1873,7 +1874,7 @@
 
         /* =====================================================================
            HERO: mobile logo slicing · photo cutout · parallax
-        ===================================================== */
+        ===================================================================== */
         function sliceLogos(img, rowGapF, colGapF, crops) {
             const W = img.naturalWidth, H = img.naturalHeight;
             const c = document.createElement('canvas');
@@ -1948,7 +1949,12 @@
                         row.style.justifyContent = items.length > 1 ? 'space-between' : (a || align);
                         items.forEach(([i, w], k) => {
                             const el = document.createElement('img');
-                            el.src = logos[i];
+                            if (typeof i === 'string') {            // a separate logo file (e.g. Starbucks)
+                                el.src = i;
+                                el.addEventListener('error', () => { el.style.visibility = 'hidden'; }, { once: true });
+                            } else {
+                                el.src = logos[i];
+                            }
                             el.alt = '';
                             el.style.width = w + '%';
                             if (k === 0) el.style.marginLeft = pl + 'cqw';
@@ -1968,7 +1974,7 @@
         // LEFT: Ferrero, Pepsi, Visa, McDonald's, Burger King, Mastercard, KFC, Sanofi
         buildStack('brands-col', 'brands-img', 'brands-m', 8, 0.08, 0.025, [
             { r: [[4, 42], [1, 39]], mt: 0.4 },
-            { r: [[3, 43]], a: 'flex-end', mt: 0.9 },
+            { r: [['images/starbucks.png', 40], [3, 43]], mt: 0.9 },   // Starbucks | McDonald's
             { r: [[0, 99]], mt: 2.8 },
             { r: [[2, 46], [6, 33]], mt: 2.1 },
             { r: [[7, 54], [5, 28]], mt: 2.2, pl: 1.1, pr: 0.6 }
@@ -2080,7 +2086,7 @@
 
         /* =====================================================================
            START
-        ===================================================== */
+        ===================================================================== */
         route();
         onScroll();
     </script>
